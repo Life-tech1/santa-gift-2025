@@ -422,17 +422,19 @@
             font-weight: normal;
         }
 
-        /* State when focused or has value (handled by JS class .has-content) */
         .input-group.has-content .input-label {
-            top: -10px;
+            top: -26px;
+            /* Moved slightly higher as requested */
             left: 12px;
             font-size: 14px;
             color: var(--primary);
             font-weight: 700;
-            background: #FFF;
-            padding: 0 4px;
-            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2px 8px;
+            border-radius: 6px;
             z-index: 2;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            /* Ensure it covers the input border */
         }
 
         input[type="text"],
@@ -2544,21 +2546,43 @@
 
             /* FIXED JOIN BUTTON ON MOBILE */
             #join-screen .card {
-                padding-bottom: 90px;
-                /* Space for fixed button */
+                padding-bottom: 20px;
             }
 
-            #join-screen .btn-primary {
+            .mobile-hidden-btn {
+                display: none !important;
+            }
+
+            .fixed-bottom-bar {
+                display: block;
                 position: fixed;
-                bottom: 25px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 90%;
-                max-width: 380px;
-                z-index: 1000;
-                box-shadow: 0 10px 30px rgba(214, 69, 69, 0.4);
-                margin: 0;
-                border: 2px solid white;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 15px 20px 30px;
+                /* Extra padding for safe area */
+                background: linear-gradient(to top, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0));
+                z-index: 9999;
+                text-align: center;
+            }
+
+            .fixed-bottom-bar .btn-primary {
+                width: 100%;
+                max-width: 400px;
+                box-shadow: 0 4px 15px rgba(214, 69, 69, 0.4);
+                margin: 0 auto;
+                position: relative;
+                /* Reset fixed if accidentally set */
+                bottom: auto;
+                left: auto;
+                transform: none;
+            }
+        }
+
+        /* Desktop/Tablet - Hide Fixed Bar */
+        @media (min-width: 481px) {
+            .fixed-bottom-bar {
+                display: none;
             }
         }
 
@@ -2887,6 +2911,13 @@
                     <label for="ready-check" data-i18n="ready_msg">พร้อมแล้ว!</label>
                 </div>
 
+                <button class="btn btn-primary mobile-hidden-btn" onclick="joinActivity()">
+                    <span data-i18n="btn_join">เข้าร่วมกิจกรรม</span>
+                </button>
+            </div>
+
+            <!-- FIXED BOTTOM BUTTON CONTAINER -->
+            <div class="fixed-bottom-bar">
                 <button class="btn btn-primary" onclick="joinActivity()">
                     <span data-i18n="btn_join">เข้าร่วมกิจกรรม</span>
                 </button>
