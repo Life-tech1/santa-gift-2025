@@ -1267,6 +1267,8 @@
         .splash-btn-wrapper {
             width: 100%;
             display: flex;
+            flex-direction: column;
+            gap: 12px;
             justify-content: center;
             margin-bottom: 20px;
         }
@@ -1296,6 +1298,34 @@
         .splash-enter-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 15px 25px rgba(249, 115, 98, 0.4);
+        }
+
+        .splash-friend-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            color: #F97362;
+            border: 2px solid #F97362;
+            padding: 14px;
+            border-radius: 16px;
+            font-family: var(--font-ui);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(249, 115, 98, 0.1);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.5s ease-out 0.2s forwards;
+        }
+
+        .splash-friend-btn:hover {
+            background: #FFF0F0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(249, 115, 98, 0.2);
         }
 
         .splash-dots {
@@ -2616,6 +2646,14 @@
             pointer-events: none;
             transition: opacity 0.8s ease-out;
         }
+
+        .cute-loader-anim {
+            font-size: 80px;
+            animation: bounce 1.5s infinite, wiggle 3s infinite ease-in-out;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.1));
+            margin-bottom: 6px;
+            display: inline-block;
+        }
     </style>
 </head>
 
@@ -2653,8 +2691,8 @@
     <div id="app">
 
         <div id="join-loader">
-            <div class="reindeer-anim">🦌</div>
-            <div class="loading-text-cute">Sending to North Pole...</div>
+            <div class="cute-loader-anim">☃️</div>
+            <div class="loading-text-cute" id="loader-msg">Sending to North Pole...</div>
             <div class="candy-loader">
                 <div class="candy-bar"></div>
             </div>
@@ -2729,6 +2767,9 @@
                     <div class="splash-btn-wrapper">
                         <button id="splash-enter-btn" class="splash-enter-btn" onclick="enterApp()">
                             <span data-i18n="splash_btn">เริ่มกิจกรรม</span> →
+                        </button>
+                        <button id="splash-friend-btn" class="splash-friend-btn" onclick="viewFriendsDirectly()">
+                            <span data-i18n="btn_view_friends">ดูการ์ดของเพื่อนๆ</span> 👯‍♀️
                         </button>
                     </div>
                     <div class="splash-dots">
@@ -2976,7 +3017,9 @@
                     "กำลังโรยดาวฤกษ์ให้กล่อง...",
                     "กำลังผูกริบบิ้นด้วยใจ...",
                     "เกือบพร้อมแล้ว... ✨"
-                ]
+                ],
+                loader_fetch_friends: "กำลังไปหยิบการ์ด...",
+                btn_view_friends: "ดูการ์ดของเพื่อนๆ"
             },
             en: {
                 splash_title: "Share good vibes\nthis Christmas 🎄",
@@ -2996,11 +3039,12 @@
                 toast_join: "Joined! 🎉", toast_err_name: "Enter name", toast_err_icon: "Pick an icon", toast_err_wish: "Write something",
                 countdown_pre: "$1 days to Christmas 🎄", countdown_post: "$1 days past Christmas",
                 loading_messages: [
-                    "Preparing your gift box...",
-                    "Sprinkling magical stardust...",
-                    "Tying ribbon with care...",
-                    "Almost ready... ✨"
-                ]
+                    "Loading guests...",
+                    "Checking the list...",
+                    "Almost there... ✨"
+                ],
+                loader_fetch_friends: "Fetching cards...",
+                btn_view_friends: "View Friend's Cards"
             }
         };
 
@@ -3249,7 +3293,7 @@
                 // Splash Loading Animation with Story Messages
                 setTimeout(() => {
                     const bar = document.getElementById('loading-fill');
-                    const messageEl = document.getElementById('loading-message');
+                    const messageEl = document.getElementById('loader-msg'); // Changed ID here
                     const messages = TEXTS[currentLang].loading_messages;
 
                     if (bar) bar.style.width = '100%';
@@ -3487,6 +3531,40 @@
                     requestAnimationFrame(() => document.getElementById('welcome-modal').classList.add('active'));
                 }, 600);
             }
+        }
+
+        function viewFriendsDirectly() {
+            // 1. Show Full Screen Loader first to hide the skeletons/empty state
+            const loader = document.getElementById('join-loader');
+            const loaderMsg = document.getElementById('loader-msg');
+
+            if (loader && loaderMsg) {
+                loaderMsg.innerText = TEXTS[currentLang].loader_fetch_friends || "Loading...";
+                loader.classList.remove('hidden');
+                // Force reflow
+                void loader.offsetWidth;
+                loader.classList.add('active');
+            }
+
+            // 2. Prepare screen behind loader
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const participantsScreen = document.getElementById('participants-screen');
+            if (participantsScreen) participantsScreen.classList.add('active');
+
+            // 3. Reveal App (Splash Fades Out -> User sees Loader)
+            enterApp();
+
+            // 4. Fetch Data & Hide Loader when done
+            // Add a minimum delay so the loader doesn't just flicker (smoothness)
+            const minLoadTime = new Promise(resolve => setTimeout(resolve, 1500));
+            const fetchTask = showParticipants();
+
+            Promise.all([fetchTask, minLoadTime]).then(() => {
+                if (loader) {
+                    loader.classList.remove('active');
+                    setTimeout(() => loader.classList.add('hidden'), 500);
+                }
+            });
         }
         function closeWelcomePopup() {
             localStorage.setItem('xmas_intro_seen_v2', '1');
