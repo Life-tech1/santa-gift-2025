@@ -424,13 +424,15 @@
 
         /* State when focused or has value (handled by JS class .has-content) */
         .input-group.has-content .input-label {
-            top: 0;
+            top: -10px;
             left: 12px;
-            font-size: 12px;
+            font-size: 14px;
             color: var(--primary);
             font-weight: 700;
-            background: rgba(255, 255, 255, 0.9);
+            background: #FFF;
+            padding: 0 4px;
             border-radius: 4px;
+            z-index: 2;
         }
 
         input[type="text"],
@@ -2539,6 +2541,25 @@
                 text-overflow: ellipsis;
                 max-width: 90%;
             }
+
+            /* FIXED JOIN BUTTON ON MOBILE */
+            #join-screen .card {
+                padding-bottom: 90px;
+                /* Space for fixed button */
+            }
+
+            #join-screen .btn-primary {
+                position: fixed;
+                bottom: 25px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90%;
+                max-width: 380px;
+                z-index: 1000;
+                box-shadow: 0 10px 30px rgba(214, 69, 69, 0.4);
+                margin: 0;
+                border: 2px solid white;
+            }
         }
 
         #videoPlayFallback {
@@ -3627,16 +3648,52 @@
         }
         async function showParticipants() {
             const container = document.getElementById('participants-list'); const countEl = document.getElementById('p-count'); container.innerHTML = Array(5).fill('<div class="skeleton-item"></div>').join('');
-            const list = await fetchParticipantsFromApi(); container.innerHTML = ''; countEl.innerText = list.length;
-            if (list.length === 0) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">☃️</div><h3>ยังเงียบเหงาอยู่เลย</h3><p>มาเป็นคนแรกกันเถอะ!</p></div>`; }
-            else {
-                [...list].reverse().forEach((p, idx) => {
-                    const luckyNumber = String(list.length - idx).padStart(3, '0'); const date = new Date(p.joinedAt || Date.now()); const timeStr = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
-                    const item = document.createElement('div'); item.className = 'participant-item'; item.onclick = function () { openProfileModal(p, luckyNumber, this); };
-                    item.innerHTML = `<div class="p-avatar">${ICONS[p.iconId] || '🙂'}</div><div class="p-info"><span class="p-name">${p.nickname}</span><span class="p-time">Joined at ${timeStr}</span></div><span class="p-badge">#${luckyNumber}</span>`;
-                    container.appendChild(item);
-                });
-            }
+            let list = await fetchParticipantsFromApi();
+
+            // --- BOT SANTA (Pinned) ---
+            const santaBot = {
+                id: 'santa-official',
+                nickname: 'Santa Claus 🎅',
+                iconId: 0, // Santa Icon
+                wishShort: TEXTS[currentLang].santa_wish || "โฮ่ โฮ่ โฮ! ขอให้คริสต์มาสปีนี้ใจดีกับพวกเด็กๆ ทุกคนเลยนะ! 🎄✨",
+                joinedAt: new Date().toISOString(),
+                isPinned: true
+            };
+            // Add Santa to the beginning
+            list = [santaBot, ...list];
+
+            countEl.innerText = list.length;
+            container.innerHTML = '';
+
+            [...list].reverse().forEach((p, idx) => {
+                // If pinned (Santa), always put at top, so don't reverse him to bottom? 
+                // Actually if we prepend to list, then reverse, Santa goes to bottom.
+                // Let's handle logic better:
+            });
+
+            // Re-sort: Pinned first, then newest
+            list.sort((a, b) => {
+                if (a.isPinned) return -1;
+                if (b.isPinned) return 1;
+                // Newest first
+                return new Date(b.joinedAt) - new Date(a.joinedAt);
+            });
+
+            list.forEach((p, idx) => {
+                // Calculate Lucky Number (Just index for now)
+                const luckyNumber = String(list.length - idx).padStart(3, '0');
+                const date = new Date(p.joinedAt || Date.now());
+                const timeStr = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+
+                const item = document.createElement('div');
+                item.className = 'participant-item';
+                if (p.isPinned) item.style.border = "2px solid #FFD700"; // Gold border for Santa
+
+                item.onclick = function () { openProfileModal(p, luckyNumber, this); };
+                item.innerHTML = `<div class="p-avatar">${ICONS[p.iconId] || '🙂'}</div><div class="p-info"><span class="p-name">${p.nickname}</span><span class="p-time">${p.isPinned ? 'Always here' : 'Joined at ' + timeStr}</span></div><span class="p-badge">#${luckyNumber}</span>`;
+                container.appendChild(item);
+            });
+
             showScreen('participants-screen');
         }
 
@@ -3659,7 +3716,22 @@
             document.getElementById('profile-lucky-num').innerText = '#' + luckyNum;
             document.getElementById('profile-avatar').innerHTML = ICONS[participant.iconId] || '🎅';
             document.getElementById('profile-name').innerText = participant.nickname;
-            document.getElementById('profile-wish').innerText = participant.wishShort || "...";
+            document.getElementById('profile-name').innerText = participant.nickname;
+
+            // --- TIME CAPSULE LOGIC ---
+            let wishDisplay = participant.wishShort || "...";
+            const isChristmas = new Date().getMonth() === 11 && new Date().getDate() >= 25; // Dec 25th or later
+
+            if (wishDisplay.startsWith('[[LOCKED]]')) {
+                if (isChristmas) {
+                    // Unlock!
+                    wishDisplay = "🔓 " + wishDisplay.replace('[[LOCKED]]', '');
+                } else {
+                    // Still Locked
+                    wishDisplay = "🔒 ข้อความนี้ถูกล็อกไว้ ห้ามแอบอ่านก่อนวันคริสต์มาสนะ! (This wish is locked until Dec 25)";
+                }
+            }
+            document.getElementById('profile-wish').innerText = wishDisplay;
 
             // Reset & Load Reactions (FIX: Ensure button state is correct)
             loadReactions(participant.id);
