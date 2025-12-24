@@ -2512,14 +2512,36 @@
         /* Mobile Tweaks */
         @media (max-width: 480px) {
             .screen {
+                padding-bottom: 40px;
+                /* Normal padding for most screens */
+            }
+
+            #join-screen {
                 padding-bottom: 150px;
-                /* Ensure button isn't hidden behind bottom bar */
+                /* Special padding for the fixed button screen */
             }
 
             .splash-card {
-                padding-bottom: 20px;
+                padding-bottom: 40px;
                 height: auto;
                 min-height: 70vh;
+            }
+
+            /* FORCE 2 COLUMNS ON MOBILE */
+            .participant-list {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+
+            .participant-item {
+                padding: 12px 8px;
+                /* Compact padding */
+            }
+
+            .p-avatar {
+                width: 48px;
+                height: 48px;
+                font-size: 28px;
             }
 
             .btn-grand-open-cute {
@@ -2558,12 +2580,19 @@
                 position: fixed;
                 bottom: 0;
                 left: 0;
-                width: 100%;
-                padding: 15px 20px 30px;
+                padding: 15px 20px 60px;
+                /* Increased bottom padding to lift button higher */
                 /* Extra padding for safe area */
                 background: linear-gradient(to top, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0));
                 z-index: 9999;
                 text-align: center;
+            }
+
+            /* Lift Splash Button higher too just in case */
+            .splash-card {
+                padding-bottom: 40px;
+                height: auto;
+                min-height: 70vh;
             }
 
             .fixed-bottom-bar .btn-primary {
