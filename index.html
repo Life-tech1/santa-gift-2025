@@ -3609,7 +3609,28 @@
             document.getElementById('profile-lucky-num').innerText = '#' + luckyNum;
             document.getElementById('profile-avatar').innerHTML = ICONS[participant.iconId] || '🎅';
             document.getElementById('profile-name').innerText = participant.nickname;
-            document.getElementById('profile-wish').innerText = participant.wishShort || "...";
+            // HANDLE TIME CAPSULE LOCK
+            let wishText = participant.wishShort || "...";
+            const isLocked = wishText.startsWith('[[LOCKED]]');
+            const now = new Date();
+            // Unlock on Dec 25th (Month 11 = Dec)
+            const isUnlockTime = (now.getMonth() === 11 && now.getDate() >= 25);
+
+            if (isLocked) {
+                if (!isUnlockTime) {
+                    wishText = "🔒 ข้อความนี้ถูกเก็บรักษาไว้ใน Time Capsule\n(เปิดอ่านได้วันที่ 25 ธ.ค.)";
+                    document.getElementById('profile-wish').style.color = '#888';
+                    document.getElementById('profile-wish').style.fontStyle = 'italic';
+                } else {
+                    wishText = wishText.replace('[[LOCKED]]', ''); // Remove tag
+                    document.getElementById('profile-wish').style.color = '';
+                    document.getElementById('profile-wish').style.fontStyle = '';
+                }
+            } else {
+                document.getElementById('profile-wish').style.color = '';
+                document.getElementById('profile-wish').style.fontStyle = '';
+            }
+            document.getElementById('profile-wish').innerText = wishText;
 
             // Reset & Load Reactions (FIX: Ensure button state is correct)
             loadReactions(participant.id);
