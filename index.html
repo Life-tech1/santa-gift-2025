@@ -2722,18 +2722,10 @@
                     <h2 class="splash-title-text" data-i18n="splash_title">
                         เติมพลังบวกให้กัน<br>ในคืนคริสต์มาส 🎄
                     </h2>
-                    <p class="splash-subtitle-text">
-                        มาร่วมส่งต่อความรู้สึกดี ๆ ให้กัน<br>ท่ามกลางเวทมนตร์แห่งคืนวันคริสต์มาส
-                    </p>
-                    <div class="splash-tagline" data-i18n="splash_tagline">
-                        เพราะทุกคำอวยพร คือของขวัญที่มีค่าที่สุด
-                    </div>
                     <div class="loading-container">
                         <div class="loading-bar" id="loading-fill"></div>
                     </div>
-                    <div class="loading-message" id="loading-message">
-                        กำลังเตรียมกล่องของขวัญของคุณ...
-                    </div>
+
                     <div class="splash-btn-wrapper">
                         <button id="splash-enter-btn" class="splash-enter-btn" onclick="enterApp()">
                             <span data-i18n="splash_btn">เริ่มกิจกรรม</span> →
@@ -3278,12 +3270,12 @@
                             }
                         }, 500); // Change message every 500ms
                     }
-                }, 300);
+                }, 50);
 
                 setTimeout(() => {
                     const btn = document.getElementById('splash-enter-btn');
                     if (btn) btn.classList.add('visible');
-                }, 1500);
+                }, 100);
 
             } catch (e) {
                 console.error("Init Error:", e);
