@@ -2506,9 +2506,16 @@
         }
 
         /* Mobile Tweaks */
-        @media (max-width: 380px) {
+        @media (max-width: 480px) {
+            .screen {
+                padding-bottom: 150px;
+                /* Ensure button isn't hidden behind bottom bar */
+            }
+
             .splash-card {
                 padding-bottom: 20px;
+                height: auto;
+                min-height: 70vh;
             }
 
             .btn-grand-open-cute {
@@ -2522,6 +2529,15 @@
 
             h2 {
                 font-size: 20px !important;
+            }
+
+            /* Fix floating label on small screens */
+            .input-label {
+                font-size: 14px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 90%;
             }
         }
 
@@ -2831,7 +2847,7 @@
 
                 <div class="input-group">
                     <label class="input-label" data-i18n="short_wish_label">ฝากคำอวยพรถึงทุกๆคน</label>
-                    <textarea id="short-wish-input" rows="3" placeholder="..."></textarea>
+                    <textarea id="short-wish-input" rows="3"></textarea>
                 </div>
 
 
