@@ -1495,11 +1495,22 @@
             padding: 20px;
             margin: 16px 0 24px;
             font-family: var(--font-hand);
-            font-size: 18px;
+            font-size: 16px;
+            /* Reduced from 18px for better fit */
             line-height: 1.6;
             color: var(--text-main);
             border: 1px dashed #E0E0E0;
             position: relative;
+            /* Scrolling Support */
+            max-height: 45vh;
+            /* Increased from 35vh */
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) #F8F9FA;
+            /* Prevent scroll gestures from closing modal */
+            touch-action: pan-y;
         }
 
         .profile-wish-box::before {
@@ -3818,39 +3829,38 @@
                 document.getElementById('react-strong-count').innerText = participant.reactions.strong || 0;
                 document.getElementById('react-star-count').innerText = participant.reactions.star || 0;
             }
-        }
+            // 2. Last: Show modal to get final rect
+            modal.classList.remove('hidden');
+            // Force layout to ensure transitions work
+            void modal.offsetWidth;
+            modal.classList.add('active');
 
-        // 2. Last: Show modal to get final rect
-        modal.classList.remove('hidden');
-        // Force layout to ensure transitions work
-        void modal.offsetWidth;
-        modal.classList.add('active');
+            if (firstRect) {
+                const lastRect = card.getBoundingClientRect();
 
-        if (firstRect) {
-            const lastRect = card.getBoundingClientRect();
+                // 3. Invert: Calculate change
+                const deltaX = firstRect.left - lastRect.left;
+                const deltaY = firstRect.top - lastRect.top;
+                const scaleX = firstRect.width / lastRect.width;
+                const scaleY = firstRect.height / lastRect.height;
 
-            // 3. Invert: Calculate change
-            const deltaX = firstRect.left - lastRect.left;
-            const deltaY = firstRect.top - lastRect.top;
-            const scaleX = firstRect.width / lastRect.width;
-            const scaleY = firstRect.height / lastRect.height;
+                // 4. Play: Animate from First to Last
+                card.style.transition = 'none';
+                card.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+                card.style.transformOrigin = 'top left';
 
-            // 4. Play: Animate from First to Last
-            card.style.transition = 'none';
-            card.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
-            card.style.transformOrigin = 'top left';
+                // Force reflow
+                void card.offsetWidth;
 
-            // Force reflow
-            void card.offsetWidth;
+                // Animate to final state
+                card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                card.style.transform = '';
 
-            // Animate to final state
-            card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            card.style.transform = '';
-
-            setTimeout(() => {
-                card.style.transition = '';
-            }, 500);
-        }
+                setTimeout(() => {
+                    card.style.transition = '';
+                    if (sourceEl) sourceEl.style.opacity = '1';
+                }, 500);
+            }
         }
         // --- CLOSE POPUP LOGIC ---
         function closeProfileModal(event) {
