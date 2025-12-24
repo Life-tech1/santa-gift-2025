@@ -422,19 +422,15 @@
             font-weight: normal;
         }
 
+        /* State when focused or has value (handled by JS class .has-content) */
         .input-group.has-content .input-label {
-            top: -26px;
-            /* Moved slightly higher as requested */
+            top: 0;
             left: 12px;
-            font-size: 14px;
+            font-size: 12px;
             color: var(--primary);
             font-weight: 700;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2px 8px;
-            border-radius: 6px;
-            z-index: 2;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            /* Ensure it covers the input border */
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
         }
 
         input[type="text"],
@@ -895,8 +891,7 @@
         .notification-card {
             position: relative;
             z-index: 5;
-            width: 90%;
-            max-width: 340px;
+            width: 320px;
             padding: 40px 20px;
             background: #FFF;
             background-image: radial-gradient(#FFF8E1 20%, transparent 20%), radial-gradient(#FFF8E1 20%, transparent 20%);
@@ -1023,9 +1018,8 @@
             background: #FFFFFF;
             width: 100%;
             max-width: 380px;
-            height: auto;
-            min-height: 60vh;
-            max-height: 85vh;
+            height: 80vh;
+            max-height: 720px;
             border-radius: 32px;
             box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
             display: flex;
@@ -1147,23 +1141,6 @@
             color: #1F2937;
             margin-bottom: 12px;
             line-height: 1.3;
-        }
-
-        .magic-gift-desc {
-            font-family: var(--font-ui);
-            font-size: 13px;
-            color: var(--text-light);
-            line-height: 1.4;
-            max-height: 120px;
-            /* Reduced to ensure it fits */
-            overflow-y: auto;
-            scrollbar-width: thin;
-            /* Ensure touch works */
-            touch-action: pan-y;
-            padding: 5px;
-            border: 1px solid #f0f0f0;
-            border-radius: 8px;
-            background: #fafafa;
         }
 
         .splash-subtitle-text {
@@ -1361,14 +1338,6 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
-            cursor: pointer;
-            /* Clickable backdrop */
-        }
-
-        .welcome-card,
-        .profile-card,
-        .letter-card {
-            cursor: default;
         }
 
         .welcome-overlay.active,
@@ -1495,22 +1464,11 @@
             padding: 20px;
             margin: 16px 0 24px;
             font-family: var(--font-hand);
-            font-size: 16px;
-            /* Reduced from 18px for better fit */
+            font-size: 18px;
             line-height: 1.6;
             color: var(--text-main);
             border: 1px dashed #E0E0E0;
             position: relative;
-            /* Scrolling Support */
-            max-height: 45vh;
-            /* Increased from 35vh */
-            overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary) #F8F9FA;
-            /* Prevent scroll gestures from closing modal */
-            touch-action: pan-y;
         }
 
         .profile-wish-box::before {
@@ -1603,13 +1561,6 @@
             line-height: 1.6;
             color: #5D4037;
             white-space: pre-wrap;
-            /* Scrollable Letter Content */
-            max-height: 50vh;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            padding-right: 5px;
-            /* Prevent text sticking to scrollbar */
-            scrollbar-color: var(--primary) #FFFCF5;
         }
 
         .letter-signature {
@@ -1663,16 +1614,19 @@
             margin-bottom: 5px;
         }
 
-        /* Ensure Modal Body Scrolls if needed */
-        /* Ensure Modal Body Scrolls if needed */
-        .profile-card,
-        .welcome-card,
-        .letter-card {
-            max-height: 85vh;
-            /* slightly less than 90 to prevent address bar issues */
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            /* Momentum scroll */
+        .magic-gift-name {
+            font-family: var(--font-hand);
+            font-size: 20px;
+            color: var(--text-main);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .magic-gift-desc {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.4;
         }
 
         .magic-gift-tag {
@@ -2541,98 +2495,10 @@
             opacity: 1;
         }
 
-        #surpriseVideo video,
-        #surpriseVideo iframe {
+        #surpriseVideo video {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            border: none;
-        }
-
-        /* Mobile Tweaks */
-        @media (max-width: 480px) {
-            .screen {
-                padding-bottom: 40px;
-                /* Normal padding for most screens */
-            }
-
-            #join-screen {
-                padding-bottom: 150px;
-                /* Special padding for the fixed button screen */
-            }
-
-            .splash-card {
-                padding-bottom: 80px;
-                /* Increased padding for Splash Screen Button */
-                height: auto;
-                min-height: 70vh;
-            }
-
-            /* FORCE 2 COLUMNS ON MOBILE */
-            .participant-list {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
-            }
-
-            .participant-item {
-                padding: 12px 8px;
-                /* Compact padding */
-            }
-
-            .p-avatar {
-                width: 48px;
-                height: 48px;
-                font-size: 28px;
-            }
-
-            .btn-grand-open-cute {
-                padding: 14px 30px;
-                font-size: 18px;
-            }
-
-            h1 {
-                font-size: 28px !important;
-            }
-
-            h2 {
-                font-size: 20px !important;
-            }
-
-            /* Fix floating label on small screens */
-            .input-label {
-                font-size: 14px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 90%;
-            }
-
-            /* FIXED JOIN BUTTON ON MOBILE */
-            #join-screen .card {
-                /* Remove Fixed Bottom Bar Styles */
-            }
-
-            .mobile-hidden-btn {
-                display: block !important;
-            }
-
-            .fixed-bottom-bar {
-                display: none;
-            }
-
-            /* Lift Splash Button higher too just in case */
-            .splash-card {
-                padding-bottom: 40px;
-                height: auto;
-                min-height: 70vh;
-            }
-        }
-
-        /* Desktop/Tablet - Hide Fixed Bar */
-        @media (min-width: 481px) {
-            .fixed-bottom-bar {
-                display: none;
-            }
         }
 
         #videoPlayFallback {
@@ -2811,7 +2677,7 @@
             </div>
         </div>
 
-        <div id="profile-modal" class="profile-overlay" onclick="closeProfileModal(event)">
+        <div id="profile-modal" class="profile-overlay" onclick="closeProfileModal()">
             <div class="profile-card" onclick="event.stopPropagation()">
 
                 <div class="profile-header">
@@ -2941,7 +2807,7 @@
 
                 <div class="input-group">
                     <label class="input-label" data-i18n="short_wish_label">ฝากคำอวยพรถึงทุกๆคน</label>
-                    <textarea id="short-wish-input" rows="3"></textarea>
+                    <textarea id="short-wish-input" rows="3" placeholder="..."></textarea>
                 </div>
 
 
@@ -3084,12 +2950,10 @@
 
     <!-- SURPRISE VIDEO SECTION -->
     <section id="surpriseVideo">
-        <div style="position: relative; width: 100%; height: 100%;">
-            <iframe id="finalVideo" src="https://www.youtube.com/embed/xrnaX4WIXuA?enablejsapi=1&rel=0"
-                style="border:0; width:100%; height:100%;" allow="autoplay; encrypted-media; picture-in-picture"
-                allowfullscreen>
-            </iframe>
-        </div>
+        <video id="finalVideo" src="Final.mp4" playsinline preload="auto" controls></video>
+        <button id="videoPlayFallback" style="display:none;">
+            ✨ แตะเพื่อเล่นวิดีโอ ✨
+        </button>
     </section>
 
     <script>
@@ -3696,7 +3560,7 @@
             let participants = JSON.parse(localStorage.getItem('xmas_participants') || '[]'); participants.push(user); localStorage.setItem('xmas_participants', JSON.stringify(participants));
             showToast(TEXTS[currentLang].toast_join); triggerGiftRain(); playSfx('sfx-join');
             const joinLoader = document.getElementById('join-loader'); joinLoader.classList.remove('hidden'); requestAnimationFrame(() => joinLoader.classList.add('active'));
-            setTimeout(() => { showParticipants().then(() => { setTimeout(() => { joinLoader.classList.remove('active'); setTimeout(() => joinLoader.classList.add('hidden'), 500); }, 1000); }); });
+            setTimeout(() => { showParticipants().then(() => { setTimeout(() => { joinLoader.classList.remove('active'); setTimeout(() => joinLoader.classList.add('hidden'), 500); }, 1000); }); }, 1500);
         }
 
         function triggerGiftRain() { const count = 15; for (let i = 0; i < count; i++) { const gift = document.createElement('div'); gift.className = 'falling-gift'; gift.innerHTML = ['🎁', '🍬', '🎄', '⭐'][Math.floor(Math.random() * 4)]; gift.style.left = Math.random() * 100 + 'vw'; gift.style.animationDuration = (2 + Math.random() * 3) + 's'; gift.style.fontSize = (20 + Math.random() * 20) + 'px'; document.body.appendChild(gift); setTimeout(() => gift.remove(), 5000); } }
@@ -3721,52 +3585,16 @@
         }
         async function showParticipants() {
             const container = document.getElementById('participants-list'); const countEl = document.getElementById('p-count'); container.innerHTML = Array(5).fill('<div class="skeleton-item"></div>').join('');
-            let list = await fetchParticipantsFromApi();
-
-            // --- BOT SANTA (Pinned) ---
-            const santaBot = {
-                id: 'santa-official',
-                nickname: 'Santa Claus 🎅',
-                iconId: 0, // Santa Icon
-                wishShort: TEXTS[currentLang].santa_wish || "โฮ่ โฮ่ โฮ! ขอให้คริสต์มาสปีนี้ใจดีกับพวกเด็กๆ ทุกคนเลยนะ! 🎄✨",
-                joinedAt: new Date().toISOString(),
-                isPinned: true
-            };
-            // Add Santa to the beginning
-            list = [santaBot, ...list];
-
-            countEl.innerText = list.length;
-            container.innerHTML = '';
-
-            [...list].reverse().forEach((p, idx) => {
-                // If pinned (Santa), always put at top, so don't reverse him to bottom? 
-                // Actually if we prepend to list, then reverse, Santa goes to bottom.
-                // Let's handle logic better:
-            });
-
-            // Re-sort: Pinned first, then newest
-            list.sort((a, b) => {
-                if (a.isPinned) return -1;
-                if (b.isPinned) return 1;
-                // Newest first
-                return new Date(b.joinedAt) - new Date(a.joinedAt);
-            });
-
-            list.forEach((p, idx) => {
-                // Calculate Lucky Number (Just index for now)
-                const luckyNumber = String(list.length - idx).padStart(3, '0');
-                const date = new Date(p.joinedAt || Date.now());
-                const timeStr = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
-
-                const item = document.createElement('div');
-                item.className = 'participant-item';
-                if (p.isPinned) item.style.border = "2px solid #FFD700"; // Gold border for Santa
-
-                item.onclick = function () { openProfileModal(p, luckyNumber, this); };
-                item.innerHTML = `<div class="p-avatar">${ICONS[p.iconId] || '🙂'}</div><div class="p-info"><span class="p-name">${p.nickname}</span><span class="p-time">${p.isPinned ? 'Always here' : 'Joined at ' + timeStr}</span></div><span class="p-badge">#${luckyNumber}</span>`;
-                container.appendChild(item);
-            });
-
+            const list = await fetchParticipantsFromApi(); container.innerHTML = ''; countEl.innerText = list.length;
+            if (list.length === 0) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">☃️</div><h3>ยังเงียบเหงาอยู่เลย</h3><p>มาเป็นคนแรกกันเถอะ!</p></div>`; }
+            else {
+                [...list].reverse().forEach((p, idx) => {
+                    const luckyNumber = String(list.length - idx).padStart(3, '0'); const date = new Date(p.joinedAt || Date.now()); const timeStr = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+                    const item = document.createElement('div'); item.className = 'participant-item'; item.onclick = function () { openProfileModal(p, luckyNumber, this); };
+                    item.innerHTML = `<div class="p-avatar">${ICONS[p.iconId] || '🙂'}</div><div class="p-info"><span class="p-name">${p.nickname}</span><span class="p-time">Joined at ${timeStr}</span></div><span class="p-badge">#${luckyNumber}</span>`;
+                    container.appendChild(item);
+                });
+            }
             showScreen('participants-screen');
         }
 
@@ -3789,46 +3617,17 @@
             document.getElementById('profile-lucky-num').innerText = '#' + luckyNum;
             document.getElementById('profile-avatar').innerHTML = ICONS[participant.iconId] || '🎅';
             document.getElementById('profile-name').innerText = participant.nickname;
+            document.getElementById('profile-wish').innerText = participant.wishShort || "...";
 
-            // --- TIME CAPSULE LOGIC (VISUAL BLUR) ---
-            const wishContainer = document.getElementById('profile-wish-container');
-            const wishEl = document.getElementById('profile-wish');
-            let rawWish = participant.wishShort || "...";
-            const isChristmas = new Date().getMonth() === 11 && new Date().getDate() >= 25;
-
-            // Reset State
-            wishEl.classList.remove('wish-locked-content');
-            const oldOverlay = wishContainer.querySelector('.locked-overlay-msg');
-            if (oldOverlay) oldOverlay.remove();
-
-            if (rawWish.startsWith('[[LOCKED]]')) {
-                const realText = rawWish.replace('[[LOCKED]]', '');
-                if (isChristmas) {
-                    // Unlock
-                    wishEl.innerText = "🔓 " + realText;
-                } else {
-                    // Lock with Blur
-                    wishEl.innerText = realText || "ความลับสุดยอด...";
-                    wishEl.classList.add('wish-locked-content');
-
-                    const overlay = document.createElement('div');
-                    overlay.className = 'locked-overlay-msg';
-                    overlay.innerHTML = '<span style="font-size:24px">🔒</span><br>เปิดอ่านได้วันที่ 25 ธ.ค.';
-                    wishContainer.appendChild(overlay);
-                }
-            } else {
-                wishEl.innerText = rawWish;
-            }
-
-            // Reset & Load Reactions
+            // Reset & Load Reactions (FIX: Ensure button state is correct)
             loadReactions(participant.id);
-
-            // Fallback for counts if not loaded
+            // Fallback for counts if not loaded from localstorage yet (fetched from API)
             if (participant.reactions) {
                 document.getElementById('react-heart-count').innerText = participant.reactions.heart || 0;
                 document.getElementById('react-strong-count').innerText = participant.reactions.strong || 0;
                 document.getElementById('react-star-count').innerText = participant.reactions.star || 0;
             }
+
             // 2. Last: Show modal to get final rect
             modal.classList.remove('hidden');
             // Force layout to ensure transitions work
@@ -3856,20 +3655,24 @@
                 card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
                 card.style.transform = '';
 
+                // Cleanup after animation
                 setTimeout(() => {
                     card.style.transition = '';
-                    if (sourceEl) sourceEl.style.opacity = '1';
+                    card.style.transformOrigin = '';
+                    sourceEl.style.opacity = '1'; // Restore source visibility
                 }, 500);
             }
         }
-        // --- CLOSE POPUP LOGIC ---
-        function closeProfileModal(event) {
-            // If event is provided (click), ensure it's on backdrop (ID check) or standard call
-            if (event && event.target.id !== 'profile-modal') return;
 
+        function closeProfileModal() {
             const modal = document.getElementById('profile-modal');
+            const card = modal.querySelector('.profile-card');
+
             modal.classList.remove('active');
-            setTimeout(() => modal.classList.add('hidden'), 400);
+            // Wait for fade out
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
 
         function loadReactions(userId) {
@@ -4498,7 +4301,8 @@
 
                     newBtn.onclick = () => {
                         const videoSection = document.getElementById('surpriseVideo');
-                        const iframe = document.getElementById('finalVideo');
+                        const vid = document.getElementById('finalVideo');
+                        const fallbackBtn = document.getElementById('videoPlayFallback');
 
                         // Fade out main app
                         document.body.classList.add('show-surprise-video');
@@ -4510,10 +4314,20 @@
                         const bgm = document.getElementById('bgm-main');
                         if (bgm) bgm.pause();
 
-                        // Auto-play YouTube by updating SRC
-                        if (!iframe.src.includes('autoplay=1')) {
-                            iframe.src += "&autoplay=1";
-                        }
+                        // Force pause and disable autoplay to be absolutely sure
+                        vid.pause();
+                        vid.currentTime = 0;
+                        vid.autoplay = false;
+
+                        // MANUAL PLAY ONLY: Show button immediately
+                        fallbackBtn.style.display = 'block';
+                        fallbackBtn.innerText = "✨ แตะเพื่อรับชมของขวัญพิเศษ ✨";
+
+                        fallbackBtn.onclick = () => {
+                            vid.muted = false;
+                            vid.play();
+                            fallbackBtn.style.display = 'none';
+                        };
                     };
                 }
             }, 1000);
