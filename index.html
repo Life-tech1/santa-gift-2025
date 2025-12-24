@@ -1,0 +1,4558 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Viewport Fix + Notch Support -->
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <meta name="theme-color" content="#E3F2FD">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Christmas Card Exchange</title>
+
+    <!-- Preload Assets -->
+    <link rel="preconnect" href="https://files.catbox.moe">
+    <link rel="icon" type="image/png" sizes="512x512" href="https://files.catbox.moe/45hjv8.png">
+    <link rel="shortcut icon" href="https://files.catbox.moe/45hjv8.png" type="image/png">
+    <link rel="preload" as="image" href="https://files.catbox.moe/45hjv8.png" fetchpriority="high">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;600;700&family=Kanit:wght@300;400;500;600&family=Mali:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+
+    <style>
+        :root {
+            /* ========== DESIGN TOKENS ========== */
+
+            /* Typography Scale */
+            --text-display: clamp(2.5rem, 5vw, 3.5rem);
+            /* 56px max - Hero text */
+            --text-title: clamp(1.75rem, 4vw, 2rem);
+            /* 32px - Section headers */
+            --text-subtitle: clamp(1.25rem, 3vw, 1.5rem);
+            /* 24px - Subheadings */
+            --text-body: 1.125rem;
+            /* 18px - Body text */
+            --text-caption: 0.875rem;
+            /* 14px - Small text */
+            --text-small: 0.75rem;
+            /* 12px - Tiny text */
+
+            /* Line Heights */
+            --leading-tight: 1.25;
+            --leading-normal: 1.5;
+            --leading-relaxed: 1.75;
+
+            /* Spacing System (8px grid) */
+            --space-1: 0.5rem;
+            /* 8px */
+            --space-2: 1rem;
+            /* 16px */
+            --space-3: 1.5rem;
+            /* 24px */
+            --space-4: 2rem;
+            /* 32px */
+            --space-5: 3rem;
+            /* 48px */
+            --space-6: 4rem;
+            /* 64px */
+
+            /* Transitions & Easing */
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+            --duration-slow: 400ms;
+
+            /* ========== THEME COLORS ========== */
+            --bg-sky-top: #FDFBF7;
+            /* Warm Cream */
+            --bg-sky-btm: #F5F0E6;
+            /* Soft Beige */
+
+            --hill-1: #E8E0D5;
+            --hill-2: #DCCFB8;
+            --hill-3: #FDFBF7;
+
+            /* Primary Colors */
+            --primary: #D64545;
+            /* Berry Red */
+            --primary-dark: #B83030;
+            --secondary: #E6B345;
+            /* Mustard Gold */
+
+            /* Text Colors */
+            --text-main: #4A4238;
+            /* Warm Charcoal */
+            --text-light: #8C8476;
+
+            /* Semantic Colors */
+            --success: #7FA865;
+            /* Sage Green */
+            --error: #D64545;
+            --warning: #F59E0B;
+
+            /* Surface Colors */
+            --glass-bg: #FDFBF7;
+            --glass-border: rgba(74, 66, 56, 0.1);
+
+            /* Shadow System */
+            --shadow-sm: 0 2px 4px rgba(74, 66, 56, 0.05);
+            --shadow-md: 0 4px 12px rgba(74, 66, 56, 0.08);
+            --shadow-lg: 0 8px 24px rgba(74, 66, 56, 0.12);
+            --shadow-xl: 0 16px 48px rgba(74, 66, 56, 0.16);
+
+            /* Legacy (keep for compatibility) */
+            --shadow-soft: var(--shadow-md);
+            --shadow-float: var(--shadow-xl);
+
+            /* Border Radius */
+            --radius-xl: 24px;
+            --radius-md: 16px;
+            --radius-sm: 8px;
+
+            /* Fonts */
+            --font-ui: 'Kanit', sans-serif;
+            --font-hand: 'Mali', cursive;
+            --font-cursive: 'Great Vibes', cursive;
+
+            /* Viewport */
+            --app-vh: 1vh;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            color: var(--text-main);
+            background: linear-gradient(to bottom, var(--bg-sky-top), var(--bg-sky-btm));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* --- App Container --- */
+        #app {
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 10;
+            background: transparent;
+            margin: 0 auto;
+            height: 100dvh;
+            height: calc(var(--app-vh, 1vh) * 100);
+            overflow: hidden;
+        }
+
+        @media (min-width: 480px) {
+            body {
+                justify-content: center;
+                min-height: 100vh;
+            }
+
+            #app {
+                height: 90vh;
+                min-height: 600px;
+                border-radius: 40px;
+                box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+                background: rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        /* --- LAYERS --- */
+        .parallax-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #snow-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .layer {
+            position: absolute;
+            width: 120%;
+            left: -10%;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-size: cover;
+            transition: transform 0.1s linear;
+        }
+
+        .layer-stars {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background-image: radial-gradient(white 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.6;
+            animation: twinkle 4s infinite alternate;
+        }
+
+        .layer-hill-1 {
+            bottom: 20%;
+            height: 40%;
+            background: var(--hill-1);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            transform: translateY(20px);
+            opacity: 0.8;
+        }
+
+        .layer-hill-2 {
+            bottom: 10%;
+            height: 35%;
+            left: -20%;
+            width: 140%;
+            background: linear-gradient(to top, var(--hill-2), #fff);
+            border-radius: 60% 40% 0 0 / 100% 100% 0 0;
+            opacity: 0.9;
+        }
+
+        .layer-hill-3 {
+            bottom: -5%;
+            height: 30%;
+            left: -10%;
+            width: 120%;
+            background: linear-gradient(to top, var(--hill-3), #fdfdfd);
+            border-radius: 40% 60% 0 0 / 80% 100% 0 0;
+            filter: drop-shadow(0 -5px 15px rgba(200, 210, 230, 0.3));
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- 3D HOLOGRAPHIC EFFECT --- */
+        .holo-container {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .holo-card {
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .holo-glare {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 60%);
+            opacity: 0;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            z-index: 10;
+            transition: opacity 0.3s;
+            border-radius: inherit;
+        }
+
+        /* Apply to existing cards */
+        .splash-card,
+        .card,
+        .hint-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        /* --- UI COMPONENTS --- */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+
+        .logo-small {
+            font-size: 24px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .top-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- COZY PAPER CARDS --- */
+        .card {
+            background: var(--glass-bg);
+            /* Paper Texture Overlay with Ambient Flow */
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+            animation: paperFlow 60s linear infinite;
+            border-radius: var(--radius-xl);
+            padding: var(--space-4) var(--space-3);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-3);
+            border: 1px solid var(--glass-border);
+            transition: transform var(--duration-slow) var(--ease-spring);
+            flex-shrink: 0;
+            position: relative;
+            transform-origin: center center;
+            will-change: transform, opacity;
+        }
+
+        @keyframes paperFlow {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 100px 100px;
+            }
+        }
+
+        /* Falling Letter Animation */
+        .card.animate-enter {
+            animation: fallingLetter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes fallingLetter {
+            0% {
+                opacity: 0;
+                transform: translateY(-40px) rotate(-2deg);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0);
+            }
+        }
+
+        h1 {
+            font-size: var(--text-title);
+            font-weight: 700;
+            line-height: var(--leading-tight);
+            margin-bottom: var(--space-1);
+            color: var(--text-main);
+        }
+
+        h2 {
+            font-size: var(--text-subtitle);
+            font-weight: 600;
+            line-height: var(--leading-tight);
+            margin-bottom: var(--space-2);
+            color: var(--text-main);
+        }
+
+        h2.white-shadow {
+            color: var(--text-main);
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        p {
+            font-size: var(--text-body);
+            color: var(--text-light);
+            line-height: var(--leading-normal);
+            margin-bottom: var(--space-3);
+        }
+
+        /* --- MODERN INPUTS (Floating Label) --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+            padding-top: 10px;
+        }
+
+        .input-label {
+            position: absolute;
+            top: 24px;
+            left: 16px;
+            font-size: 16px;
+            color: var(--text-light);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: transparent;
+            padding: 0 4px;
+            font-weight: normal;
+        }
+
+        /* State when focused or has value (handled by JS class .has-content) */
+        .input-group.has-content .input-label {
+            top: 0;
+            left: 12px;
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 16px 16px 12px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-md);
+            font-family: var(--font-hand);
+            font-size: 18px;
+            outline: none;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--text-main);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.15);
+        }
+
+        /* Icons */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .icon-option {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .icon-option:hover {
+            transform: translateY(-3px);
+            background: white;
+        }
+
+        .icon-option.selected {
+            background: white;
+            border-color: var(--success);
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(102, 187, 106, 0.3);
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            min-height: 44px;
+            /* Touch-friendly */
+            padding: var(--space-2);
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-ui);
+            font-size: var(--text-body);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-out-expo);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--space-1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --- COZY MATTE BUTTONS --- */
+        .btn-primary {
+            background: var(--primary);
+            color: #FFF;
+            box-shadow: 0 4px 0 var(--primary-dark);
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 var(--primary-dark);
+            filter: brightness(1.05);
+        }
+
+        .btn-primary:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 0 2px 0 var(--primary-dark);
+        }
+
+        /* Shimmer Effect */
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: skewX(-20deg);
+            animation: shimmer 4s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+
+            20% {
+                left: 200%;
+            }
+
+            100% {
+                left: 200%;
+            }
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 var(--primary-dark), 0 15px 30px rgba(255, 107, 107, 0.4);
+            filter: brightness(1.05);
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px) scale(0.95);
+            box-shadow: 0 2px 0 var(--primary-dark);
+            animation: jelly 0.5s;
+        }
+
+        @keyframes jelly {
+            0% {
+                transform: scale(1, 1);
+            }
+
+            30% {
+                transform: scale(1.15, 0.85);
+            }
+
+            40% {
+                transform: scale(0.85, 1.15);
+            }
+
+            50% {
+                transform: scale(1.05, 0.95);
+            }
+
+            65% {
+                transform: scale(0.98, 1.02);
+            }
+
+            75% {
+                transform: scale(1.02, 0.98);
+            }
+
+            100% {
+                transform: scale(1, 1);
+            }
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-main);
+            backdrop-filter: blur(5px);
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            background: white;
+        }
+
+        .lang-toggle {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 4px;
+            display: flex;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--text-main);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Participant List */
+        /* --- GRID MASONRY LIST --- */
+        .participant-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px;
+            min-height: 200px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            align-content: start;
+        }
+
+        .participant-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-bottom: 0;
+            /* Reset margin for grid */
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .participant-item:hover {
+            transform: translateY(-5px) scale(1.03);
+            background: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            z-index: 2;
+        }
+
+        .p-avatar {
+            width: 56px;
+            height: 56px;
+            background: #FFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-right: 0;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 10px rgba(74, 66, 56, 0.1);
+            border: 2px solid #FDFBF7;
+        }
+
+        .p-info {
+            flex: 1;
+        }
+
+        .p-name {
+            font-weight: 600;
+            font-size: 16px;
+            display: block;
+            color: var(--text-main);
+        }
+
+        .p-time {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .p-badge {
+            background: var(--secondary);
+            color: #7e5a06;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            color: var(--text-main);
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        /* JOIN LOADING SCREEN */
+        #join-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        #join-loader.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .reindeer-anim {
+            font-size: 80px;
+            animation: gallop 0.8s infinite alternate ease-in-out;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.1));
+        }
+
+        @keyframes gallop {
+            0% {
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            100% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        .loading-text-cute {
+            font-family: var(--font-hand);
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .candy-loader {
+            width: 200px;
+            height: 16px;
+            background: #eee;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #FFCDD2;
+        }
+
+        .candy-bar {
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg, #FF6B6B, #FF6B6B 10px, #FFFFFF 10px, #FFFFFF 20px);
+            animation: barberpole 2s linear infinite;
+        }
+
+        @keyframes barberpole {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 40px 0;
+            }
+        }
+
+        /* NOTIFICATION OVERLAY */
+        #santa-notification-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: radial-gradient(circle at center, rgba(40, 50, 80, 0.9), rgba(10, 15, 30, 0.95));
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #santa-notification-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sparkle-item {
+            position: absolute;
+            color: #FFF;
+            font-size: 20px;
+            animation: sparkleFloat 3s infinite;
+            pointer-events: none;
+            text-shadow: 0 0 10px gold;
+        }
+
+        @keyframes sparkleFloat {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translateY(-50px) scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .notification-card {
+            position: relative;
+            z-index: 5;
+            width: 320px;
+            padding: 40px 20px;
+            background: #FFF;
+            background-image: radial-gradient(#FFF8E1 20%, transparent 20%), radial-gradient(#FFF8E1 20%, transparent 20%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(255, 107, 107, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 4px solid #FF6B6B;
+            transform: scale(0.5) translateY(50px);
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+        }
+
+        #santa-notification-overlay.active .notification-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .cute-envelope-anim {
+            font-size: 90px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: wiggle 2s infinite ease-in-out;
+            filter: drop-shadow(0 10px 20px rgba(255, 107, 107, 0.3));
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            100% {
+                transform: rotate(-5deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(5deg) scale(1.1);
+            }
+        }
+
+        .notif-title-cute {
+            font-family: var(--font-hand);
+            color: #E05555;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px #FFCDD2;
+        }
+
+        .notif-desc-cute {
+            color: var(--text-light);
+            font-family: var(--font-ui);
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .btn-grand-open-cute {
+            background: linear-gradient(135deg, #FF6B6B, #FF8A65);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-family: var(--font-hand);
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 0 #D84315, 0 20px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .btn-grand-open-cute:active {
+            transform: translateY(5px);
+            box-shadow: 0 5px 0 #D84315;
+        }
+
+        .zoom-out-fade {
+            animation: zoomOutFade 0.6s forwards ease-in;
+        }
+
+        @keyframes zoomOutFade {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        .zoom-in-enter {
+            animation: zoomInEnter 0.6s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+        }
+
+        @keyframes zoomInEnter {
+            0% {
+                transform: scale(0.5) rotate(-5deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) rotate(-1deg);
+                opacity: 1;
+            }
+        }
+
+        /* SPLASH SCREEN */
+        #splash-screen {
+            position: absolute;
+            inset: 0;
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);
+            overflow: hidden;
+            transition: opacity 0.6s ease;
+            padding: 20px;
+        }
+
+        .splash-card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 380px;
+            height: 80vh;
+            max-height: 720px;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            animation: cardFloatUp 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            transform-origin: center bottom;
+        }
+
+        @media (min-width: 480px) {
+            .splash-card {
+                max-width: 420px;
+            }
+        }
+
+        @keyframes cardFloatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .splash-header {
+            padding: 24px 24px 0;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .splash-menu-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            opacity: 0.4;
+        }
+
+        .splash-menu-icon span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: #333;
+            border-radius: 2px;
+        }
+
+        .splash-menu-icon span:nth-child(2) {
+            width: 70%;
+        }
+
+        .splash-illustration {
+            flex: 0 0 auto;
+            width: 100%;
+            height: min(240px, 45vh);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0 20px;
+            filter: drop-shadow(0 20px 30px rgba(249, 115, 98, 0.3));
+            animation: logoFloatBreath 3.5s ease-in-out infinite;
+            position: relative;
+        }
+
+        .splash-illustration img {
+            max-width: 70%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
+        }
+
+        @keyframes logoFloatBreath {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-8px) scale(1.03);
+            }
+
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .splash-illustration::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(249, 115, 98, 0.4), transparent 70%);
+            filter: blur(15px);
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        .splash-body {
+            padding: 0 32px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .splash-title-text {
+            font-family: var(--font-ui);
+            font-size: 24px;
+            font-weight: 700;
+            color: #1F2937;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .splash-subtitle-text {
+            font-family: var(--font-ui);
+            font-size: 14px;
+            color: #9CA3AF;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            max-width: 280px;
+        }
+
+        .splash-tagline {
+            font-family: var(--font-hand);
+            font-size: var(--text-caption);
+            color: var(--text-light);
+            font-style: italic;
+            margin: var(--space-2) 0 var(--space-4);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-container {
+            width: 100%;
+            max-width: 260px;
+            height: 10px;
+            background: linear-gradient(90deg, #FFE5E5, #FFF0E5);
+            border-radius: 99px;
+            overflow: hidden;
+            margin-bottom: var(--space-2);
+            box-shadow:
+                inset 0 2px 4px rgba(249, 115, 98, 0.1),
+                0 0 20px rgba(249, 115, 98, 0.1);
+            position: relative;
+        }
+
+        .loading-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.6) 50%,
+                    transparent);
+            animation: shimmerFlow 2s infinite;
+        }
+
+        @keyframes shimmerFlow {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(200%);
+            }
+        }
+
+        .loading-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    #FFB5B5,
+                    #FF9A9E,
+                    #F97362,
+                    #FF9A9E,
+                    #FFB5B5);
+            background-size: 200% 100%;
+            border-radius: 99px;
+            transition: width 2s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow:
+                0 0 10px rgba(249, 115, 98, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            animation: flowingGradient 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes flowingGradient {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .loading-message {
+            font-family: var(--font-hand);
+            font-size: var(--text-small);
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: var(--space-3);
+            min-height: 20px;
+            opacity: 0.8;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .splash-btn-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .splash-enter-btn {
+            width: 100%;
+            background: #F97362;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-family: var(--font-ui);
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 10px 20px rgba(249, 115, 98, 0.3);
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .splash-enter-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .splash-enter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(249, 115, 98, 0.4);
+        }
+
+        .splash-dots {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .splash-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E5E7EB;
+            transition: all 0.3s;
+        }
+
+        .splash-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: #F97362;
+        }
+
+        body.app-ready #splash-screen {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* MODALS */
+        .welcome-overlay,
+        .profile-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(50, 60, 80, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 10002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .welcome-overlay.active,
+        .profile-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .welcome-card,
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            max-width: 360px;
+            border-radius: 28px;
+            padding: 0;
+            text-align: center;
+            box-shadow: var(--shadow-float);
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid white;
+            overflow: hidden;
+        }
+
+        .welcome-overlay.active .welcome-card,
+        .profile-overlay.active .profile-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .welcome-body {
+            padding: 32px 24px;
+        }
+
+        .welcome-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        .welcome-text {
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            white-space: pre-line;
+            text-align: left;
+            background: #F5F7FA;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .welcome-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--text-main);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+            transition: transform 0.1s;
+        }
+
+        .welcome-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Profile Popup */
+        .profile-header {
+            background: linear-gradient(135deg, #FFF8E1, #FFFFFF);
+            padding: 30px 20px 20px;
+            border-radius: 0 0 50% 50% / 0 0 20px 20px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .profile-avatar-wrapper {
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 4px solid white;
+        }
+
+        .profile-body {
+            padding: 10px 30px 30px;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .lucky-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary);
+            color: #7e5a06;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(255, 217, 61, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profile-wish-box {
+            background: #F8F9FA;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px 0 24px;
+            font-family: var(--font-hand);
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-main);
+            border: 1px dashed #E0E0E0;
+            position: relative;
+        }
+
+        .profile-wish-box::before {
+            content: '“';
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 40px;
+            color: #FFD54F;
+            font-family: serif;
+        }
+
+        .wish-locked-content {
+            filter: blur(5px);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .locked-overlay-msg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: var(--error);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .profile-close-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #FF9A9E, #FECFEF);
+            color: #FFF;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: var(--font-ui);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 154, 158, 0.6);
+        }
+
+        /* SANTA LETTER & RECEIPT */
+        .santa-letter-container {
+            display: none;
+            padding: 0 10px;
+        }
+
+        .letter-card {
+            background: #FFFCF5;
+            border: 1px solid #F0E6D2;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin-bottom: 20px;
+            background-image: repeating-linear-gradient(#FFFCF5 0px, #FFFCF5 24px, #E0E0E0 25px);
+            transform: rotate(-1deg);
+        }
+
+        .letter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: repeating-linear-gradient(45deg, #FF6B6B 0, #FF6B6B 10px, white 10px, white 20px, #4A9085 20px, #4A9085 30px, white 30px, white 40px);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .letter-content {
+            font-family: var(--font-hand);
+            font-size: 20px;
+            line-height: 1.6;
+            color: #5D4037;
+            white-space: pre-wrap;
+        }
+
+        .letter-signature {
+            margin-top: 30px;
+            font-family: var(--font-hand);
+            font-size: 18px;
+            font-style: italic;
+            text-align: right;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* --- REPLACING RECEIPT WITH MAGIC GIFT CARD --- */
+        .magic-gift-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #FFF;
+            border-radius: 16px;
+            border: 2px dashed #FFD54F;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .magic-gift-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.1));
+            animation: floatGift 3s ease-in-out infinite;
+        }
+
+        @keyframes floatGift {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .magic-gift-title {
+            font-family: var(--font-ui);
+            font-size: 14px;
+            font-weight: 700;
+            color: #E67E22;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .magic-gift-name {
+            font-family: var(--font-hand);
+            font-size: 20px;
+            color: var(--text-main);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .magic-gift-desc {
+            font-family: var(--font-ui);
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .magic-gift-tag {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FF6B6B;
+            color: white;
+            font-size: 10px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* HINT Feature */
+        .btn-magic-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px auto 10px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #FFD54F, #FFB300);
+            color: #5D4037;
+            font-family: var(--font-ui);
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #FFECB3;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(255, 179, 0, 0.3);
+            transition: all 0.2s;
+            width: fit-content;
+        }
+
+        .btn-magic-hint:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 179, 0, 0.5);
+        }
+
+        .hint-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10010;
+            background: rgba(10, 20, 40, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .hint-overlay.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .hint-card {
+            width: 100%;
+            max-width: 420px;
+            background: linear-gradient(160deg, #2c3e50, #4a69bd);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(74, 105, 189, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: scale(0.85);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
+        }
+
+        .hint-overlay.is-open .hint-card {
+            transform: scale(1);
+        }
+
+        .hint-card::before,
+        .hint-card::after {
+            content: '✨';
+            position: absolute;
+            font-size: 20px;
+            animation: twinkle 3s infinite;
+            opacity: 0.6;
+        }
+
+        .hint-card::before {
+            top: 10px;
+            left: 15px;
+            animation-delay: 0s;
+        }
+
+        .hint-card::after {
+            bottom: 15px;
+            right: 20px;
+            animation-delay: 1.5s;
+        }
+
+        .hint-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px gold);
+        }
+
+        .hint-text-area {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .hint-text {
+            color: #FFF8E1;
+            font-family: var(--font-hand);
+            font-size: 18px;
+            line-height: 1.6;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hint-close-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hint-close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* BUTTON ROW */
+        .letter-btn-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            gap: 10px;
+        }
+
+        .letter-action-btn {
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-ui);
+            font-weight: 600;
+        }
+
+        .btn-ghost-rewrite {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .btn-ghost-rewrite:hover {
+            background: rgba(255, 255, 255, 0.5);
+            color: var(--text-main);
+            transform: translateY(-2px);
+        }
+
+        .btn-keep-mini {
+            background: linear-gradient(135deg, #FFB74D, #FF9800);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            animation: popIn 0.5s both;
+            animation-delay: 0.2s;
+        }
+
+        .btn-keep-mini:hover {
+            transform: scale(1.05) translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        /* SNAPSHOT MODE */
+        body.snapshot-mode .letter-btn-row,
+        body.snapshot-mode .top-bar,
+        body.snapshot-mode .btn-magic-hint,
+        body.snapshot-mode .back-btn {
+            display: none !important;
+        }
+
+        body.snapshot-mode .letter-card {
+            transform: rotate(0deg) scale(1.02) !important;
+            margin: 60px auto;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+
+        body.snapshot-mode #santa-notification-overlay,
+        body.snapshot-mode #wish-form-container {
+            display: none;
+        }
+
+        /* Screen & Footer */
+        .screen {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            padding: calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(0.95);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        .participants-footer {
+            margin-top: 10px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding-top: 20px;
+        }
+
+        .wish-countdown {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.6);
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .reaction-section {
+            margin-bottom: 20px;
+            border-top: 1px solid #EEE;
+            padding-top: 15px;
+        }
+
+        .reaction-title {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .reaction-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .reaction-btn {
+            background: #F5F7FA;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .reaction-btn:hover {
+            transform: translateY(-2px);
+            background: #E3F2FD;
+        }
+
+        .reaction-btn:active {
+            transform: scale(0.95);
+        }
+
+        .reaction-btn.reacted {
+            background: #FFF9C4;
+            border: 1px solid #FFD54F;
+            color: #F57F17;
+        }
+
+        .skeleton-item {
+            height: 80px;
+            background: rgba(255, 255, 255, 0.5);
+            margin-bottom: 12px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .skeleton-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.7;
+        }
+
+        .empty-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            animation: snowFall linear infinite;
+            transition: transform 0.3s;
+        }
+
+        .snowflake.storm {
+            animation: snowStorm 0.5s linear infinite !important;
+            opacity: 0.9 !important;
+            filter: blur(1px);
+        }
+
+        @keyframes snowFall {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(110vh) translateX(20px);
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes snowStorm {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+            }
+
+            25% {
+                transform: translateY(25vh) translateX(15px) scale(1.2);
+            }
+
+            50% {
+                transform: translateY(50vh) translateX(-15px) scale(0.8);
+            }
+
+            75% {
+                transform: translateY(75vh) translateX(15px) scale(1.2);
+            }
+
+            100% {
+                transform: translateY(100vh) translateX(-15px) scale(1);
+            }
+        }
+
+        .falling-gift {
+            position: fixed;
+            top: -50px;
+            font-size: 24px;
+            z-index: 100;
+            animation: fall linear forwards;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        #toast {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 300;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: var(--text-main);
+        }
+
+        #toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-icon {
+            color: var(--success);
+            font-size: 20px;
+        }
+
+        .toast-msg {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Feature 1: Countdown Widget */
+        .countdown-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .cd-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cd-num {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+            line-height: 1.2;
+            font-family: var(--font-ui);
+        }
+
+        .cd-label {
+            font-size: 10px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Wrapping Patterns */
+        .bg-wrap-1 {
+            background: radial-gradient(#e57373 15%, transparent 16%), #ffcdd2 !important;
+            background-size: 20px 20px !important;
+        }
+
+        .bg-wrap-2 {
+            background: repeating-linear-gradient(45deg, #81c784, #81c784 10px, #c8e6c9 10px, #c8e6c9 20px) !important;
+        }
+
+        .bg-wrap-3 {
+            background-color: #bbdefb !important;
+            background-image: radial-gradient(#2196f3 1px, transparent 1px) !important;
+            background-size: 10px 10px !important;
+        }
+
+        .wrapping-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .wrap-opt {
+            height: 60px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .wrap-opt.selected {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Gift Overlay */
+        .gift-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0 0 28px 28px;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            cursor: pointer;
+            background: rgba(10, 25, 50, 0.85);
+        }
+
+        .gift-overlay.hidden-gift {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+        }
+
+        .gift-bow {
+            font-size: 80px;
+            animation: bounce 2s infinite;
+            pointer-events: none;
+        }
+
+        .gift-text {
+            color: white;
+            font-weight: 800;
+            font-size: 24px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+            pointer-events: none;
+        }
+
+        .gift-sub {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            pointer-events: none;
+            margin-top: 5px;
+        }
+
+        @keyframes shake-gift {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(5deg);
+            }
+
+            50% {
+                transform: rotate(0deg);
+            }
+
+            75% {
+                transform: rotate(-5deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .gift-overlay.shaking {
+            animation: shake-gift 0.3s ease-in-out;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* SANTA WISH FORM */
+        .santa-paper-container {
+            background-color: #fdfbf7;
+            background-image: linear-gradient(#eee .1em, transparent .1em);
+            background-size: 100% 28px;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            margin-bottom: 20px;
+            border: 2px dashed #D4A5A5;
+        }
+
+        .santa-header-text {
+            font-family: var(--font-cursive);
+            font-size: 36px;
+            color: #C0392B;
+            margin-bottom: 10px;
+            text-align: center;
+            transform: rotate(-2deg);
+        }
+
+        .santa-input-clean {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-bottom: 2px dashed #D4A5A5 !important;
+            border-radius: 0 !important;
+            padding-left: 0 !important;
+            font-family: var(--font-hand) !important;
+            margin-bottom: 15px;
+        }
+
+        .santa-input-clean:focus {
+            border-color: #C0392B !important;
+        }
+
+        /* FINAL SCREEN */
+        #final-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #1a2a6c, #b21f1f, #fdbb2d);
+            transition: background 1s ease;
+        }
+
+        .scene-decor {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .string-lights {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><path d="M0 0 Q 25 20 50 0 T 100 0" stroke="%23333" fill="none"/><circle cx="25" cy="10" r="3" fill="%23FFD700"/><circle cx="75" cy="10" r="3" fill="%23FF6B6B"/></svg>');
+            background-size: 100px 40px;
+            animation: glow 3s infinite alternate;
+            z-index: 2;
+        }
+
+        @keyframes glow {
+            0% {
+                filter: brightness(1);
+            }
+
+            100% {
+                filter: brightness(1.5);
+            }
+        }
+
+        /* Scene Variants */
+        .final-scene-snowman {
+            background: linear-gradient(to bottom, #83a4d4, #b6fbff) !important;
+        }
+
+        .final-scene-snowman .scene-decor::before {
+            content: '⛄';
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 80px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .final-scene-snowman .scene-decor::after {
+            content: '❄️';
+            position: absolute;
+            top: 50px;
+            right: 30px;
+            font-size: 40px;
+            animation: twinkle 4s infinite;
+        }
+
+        .final-scene-tree {
+            background: linear-gradient(to bottom, #114357, #F29492) !important;
+        }
+
+        .final-scene-tree .scene-decor::before {
+            content: '🎄';
+            position: absolute;
+            bottom: 30px;
+            right: 20px;
+            font-size: 90px;
+            animation: float 5s ease-in-out infinite reverse;
+        }
+
+        .final-scene-tree .scene-decor::after {
+            content: '🎁';
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            font-size: 50px;
+            animation: bounce 3s infinite;
+        }
+
+        .final-scene-candles {
+            background: linear-gradient(to bottom, #403B4A, #E7E9BB) !important;
+        }
+
+        .final-scene-candles .scene-decor::before {
+            content: '🕯️';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 70px;
+            filter: drop-shadow(0 0 20px orange);
+            animation: glow 2s infinite;
+        }
+
+        .final-scene-candles .scene-decor::after {
+            content: '🍂';
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            font-size: 40px;
+            animation: float 8s linear infinite;
+        }
+
+        .final-scene-gifts {
+            background: linear-gradient(to bottom, #2b5876, #4e4376) !important;
+        }
+
+        .final-scene-gifts .scene-decor::before {
+            content: '🎁';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 70px;
+        }
+
+        .final-scene-gifts .scene-decor::after {
+            content: '🎀';
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-size: 50px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .final-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            max-width: 90%;
+            width: 380px;
+            z-index: 5;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .final-screen-active .final-card {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .final-msg-main {
+            font-family: var(--font-cursive);
+            font-size: 64px;
+            color: #C0392B;
+            margin-bottom: 5px;
+            line-height: 1.1;
+            text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5), 0 5px 15px rgba(192, 57, 43, 0.3);
+        }
+
+        .final-msg-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .final-msg-sub {
+            font-size: 16px;
+            color: var(--text-light);
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        .fade-out-letter {
+            animation: letterFlyAway 1s forwards;
+            pointer-events: none;
+        }
+
+        @keyframes letterFlyAway {
+            0% {
+                transform: rotate(-1deg) scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: rotate(5deg) scale(0.8);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: rotate(20deg) scale(0) translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* --- SURPRISE VIDEO SECTION --- */
+        #surpriseVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+        }
+
+        #surpriseVideo.video-show {
+            display: flex;
+            opacity: 1;
+        }
+
+        #surpriseVideo video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #videoPlayFallback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-family: var(--font-hand);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        #videoPlayFallback:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- SPECIAL EFFECTS: Starry Night & Typewriter --- */
+        .final-scene-starry {
+            background: linear-gradient(to bottom, #000000, #0f2027, #203a43, #2c5364) !important;
+            overflow: hidden;
+        }
+
+        .starry-bg {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(white, rgba(255, 255, 255, .2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255, 255, 255, .15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255, 255, 255, .1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: twinkleStars 100s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes twinkleStars {
+            from {
+                background-position: 0 0, 40px 60px, 130px 270px;
+            }
+
+            to {
+                background-position: 550px 550px, 390px 410px, 680px 820px;
+            }
+        }
+
+        .shooting-star {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.1), 0 0 20px rgba(255, 255, 255, 1);
+            animation: shoot 3s linear infinite;
+            opacity: 0;
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 1px;
+            background: linear-gradient(90deg, #fff, transparent);
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: rotate(315deg) translateX(0);
+                opacity: 1;
+            }
+
+            70% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotate(315deg) translateX(-1000px);
+                opacity: 0;
+            }
+        }
+
+        .typewriter-cursor::after {
+            content: '|';
+            animation: cursor-blink 1s step-end infinite;
+        }
+
+        @keyframes cursor-blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Fade out main app when video shows */
+        body.show-surprise-video #app {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        function updateAppHeight() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--app-vh', `${vh}px`);
+        }
+        window.addEventListener('resize', updateAppHeight);
+        window.addEventListener('orientationchange', updateAppHeight);
+        updateAppHeight();
+    </script>
+
+    <audio id="bgm-main" src="https://files.catbox.moe/1yphmz.mp3" loop></audio>
+    <audio id="sfx-join" src="https://files.catbox.moe/lm52v2.mp3"></audio>
+    <audio id="sfx-wish-enter" src="https://files.catbox.moe/dv9oeh.mp3"></audio>
+    <audio id="sfx-magic" src="https://files.catbox.moe/pjz0v1.mp3"></audio>
+    <audio id="sfx-letter"
+        src="data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAAABmYWN0BAAAAAAAAABkYXRhAAAAAA=="></audio>
+    <audio id="sfx-nav" src="https://files.catbox.moe/lm52v2.mp3"></audio>
+    <audio id="sfx-unwrap" src="https://files.catbox.moe/pjz0v1.mp3"></audio>
+    <audio id="sfx-notif-grand" src="https://files.catbox.moe/gonf0u.mp3"></audio>
+    <audio id="sfx-finale" src="https://files.catbox.moe/j2o1vr.mp3"></audio>
+
+    <canvas id="snow-canvas" style="position: fixed; inset: 0; pointer-events: none; z-index: 1;"></canvas>
+    <div class="parallax-container">
+        <div class="layer layer-stars"></div>
+        <div class="layer layer-hill-1"></div>
+        <div class="layer layer-hill-2"></div>
+        <div class="layer layer-hill-3"></div>
+    </div>
+
+    <div id="app">
+
+        <div id="join-loader">
+            <div class="reindeer-anim">🦌</div>
+            <div class="loading-text-cute">Sending to North Pole...</div>
+            <div class="candy-loader">
+                <div class="candy-bar"></div>
+            </div>
+        </div>
+
+        <div id="santa-notification-overlay">
+            <div class="sparkle-item" style="top:20%; left:20%;">✨</div>
+            <div class="sparkle-item" style="top:30%; right:20%; animation-delay:0.5s;">🌟</div>
+            <div class="sparkle-item" style="bottom:30%; left:30%; animation-delay:1s;">✨</div>
+            <div class="sparkle-item" style="bottom:20%; right:30%; animation-delay:1.5s;">❄️</div>
+
+            <div class="notification-card">
+                <div class="cute-envelope-anim">💌</div>
+                <h2 class="notif-title-cute" data-i18n="letter_received_title">Special Delivery!</h2>
+                <p class="notif-desc-cute" data-i18n="letter_received_desc">A magical letter from the North Pole has
+                    arrived just for you.</p>
+                <button class="btn-grand-open-cute" onclick="transitionToLetter()">
+                    <span data-i18n="btn_open_letter">OPEN LETTER</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="profile-modal" class="profile-overlay" onclick="closeProfileModal()">
+            <div class="profile-card" onclick="event.stopPropagation()">
+
+                <div class="profile-header">
+                    <div class="lucky-badge" id="profile-lucky-num">#000</div>
+                    <div class="profile-avatar-wrapper" id="profile-avatar">🎅</div>
+                    <div class="profile-label" data-i18n="card_from">Card from</div>
+                    <div class="profile-name" id="profile-name">Name</div>
+                </div>
+                <div class="profile-body" style="position: relative; overflow: hidden;">
+                    <div class="profile-wish-box" id="profile-wish">Wish text...</div>
+                    <div class="reaction-section">
+                        <div class="reaction-title" data-i18n="reaction_title">รู้สึกยังไงกับการ์ดใบนี้บ้าง?</div>
+                        <div class="reaction-buttons">
+                            <button class="reaction-btn" onclick="reactToProfile('heart', this)">💖 <span
+                                    id="react-heart-count">0</span></button>
+                            <button class="reaction-btn" onclick="reactToProfile('strong', this)">💪 <span
+                                    id="react-strong-count">0</span></button>
+                            <button class="reaction-btn" onclick="reactToProfile('star', this)">🌟 <span
+                                    id="react-star-count">0</span></button>
+                        </div>
+                    </div>
+                    <button class="profile-close-btn" onclick="closeProfileModal()">
+                        <span>✨</span> <span data-i18n="btn_close_card">ปิดการ์ดนี้</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW SPLASH SCREEN -->
+        <div id="splash-screen">
+            <div class="splash-card">
+                <div class="splash-header">
+                    <div class="splash-menu-icon">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+                <div class="splash-illustration">
+                    <img id="splash-logo-img" src="https://files.catbox.moe/45hjv8.png" alt="Christmas Compass Logo"
+                        width="512" height="512" loading="eager" decoding="async" fetchpriority="high">
+                </div>
+                <div class="splash-body">
+                    <h2 class="splash-title-text" data-i18n="splash_title">
+                        เติมพลังบวกให้กัน<br>ในคืนคริสต์มาส 🎄
+                    </h2>
+                    <p class="splash-subtitle-text">
+                        มาร่วมส่งต่อความรู้สึกดี ๆ ให้กัน<br>ท่ามกลางเวทมนตร์แห่งคืนวันคริสต์มาส
+                    </p>
+                    <div class="splash-tagline" data-i18n="splash_tagline">
+                        เพราะทุกคำอวยพร คือของขวัญที่มีค่าที่สุด
+                    </div>
+                    <div class="loading-container">
+                        <div class="loading-bar" id="loading-fill"></div>
+                    </div>
+                    <div class="loading-message" id="loading-message">
+                        กำลังเตรียมกล่องของขวัญของคุณ...
+                    </div>
+                    <div class="splash-btn-wrapper">
+                        <button id="splash-enter-btn" class="splash-enter-btn" onclick="enterApp()">
+                            <span data-i18n="splash_btn">เริ่มกิจกรรม</span> →
+                        </button>
+                    </div>
+                    <div class="splash-dots">
+                        <span class="splash-dot active"></span>
+                        <span class="splash-dot"></span>
+                        <span class="splash-dot"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="welcome-modal" class="welcome-overlay hidden" onclick="closeWelcomePopup()">
+            <div class="welcome-card" onclick="event.stopPropagation()">
+                <div class="welcome-body">
+                    <div class="welcome-icon">📖</div>
+                    <div class="welcome-title" data-i18n="welcome_title">วิธีเล่น (How to Play)</div>
+                    <div class="welcome-text" data-i18n="welcome_body">
+                        1. ลงชื่อเข้าร่วมกิจกรรม 📝
+                        2. เลือกไอคอนและลายห่อของขวัญ 🎁
+                        3. ฝากคำอวยพรให้เพื่อนๆ
+                        4. เขียนจดหมายลับถึงซานต้า 🎅
+                    </div>
+                    <button class="welcome-btn" onclick="closeWelcomePopup()">
+                        <span data-i18n="welcome_btn">เข้าใจแล้ว!</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast">
+            <span class="toast-icon">✓</span>
+            <span class="toast-msg">Success!</span>
+        </div>
+
+        <div id="join-screen" class="screen">
+            <div class="top-bar">
+                <div class="logo-small">🎄</div>
+                <div class="top-controls">
+                    <div class="lang-toggle">
+                        <button class="lang-btn active" onclick="setLang('th')">TH</button>
+                        <button class="lang-btn" onclick="setLang('en')">EN</button>
+                    </div>
+                    <button class="btn-icon mute-btn" onclick="toggleMute()">
+                        <span id="mute-icon">🔊</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <div id="main-countdown" class="countdown-box">
+                <div class="cd-item"><span class="cd-num" id="main-cd-d">00</span><span class="cd-label">DAYS</span>
+                </div>
+                <div class="cd-item"><span class="cd-num" id="main-cd-h">00</span><span class="cd-label">HRS</span>
+                </div>
+                <div class="cd-item"><span class="cd-num" id="main-cd-m">00</span><span class="cd-label">MIN</span>
+                </div>
+                <div class="cd-item"><span class="cd-num" id="main-cd-s">00</span><span class="cd-label">SEC</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h1 data-i18n="join_title">เข้าร่วมแลกการ์ด</h1>
+                <p data-i18n="join_subtitle">ส่งพลังบวกให้กันในวันพิเศษ</p>
+
+                <div class="input-group">
+                    <input type="text" id="nickname-input" placeholder="ชื่อเล่น / Nickname" maxlength="15">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" data-i18n="short_wish_label">ฝากคำอวยพรถึงทุกๆคน</label>
+                    <textarea id="short-wish-input" rows="3" placeholder="..."></textarea>
+                </div>
+
+
+
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="lock-wish">
+                    <label for="lock-wish" data-i18n="lock_label">Time Capsule (เปิด 25 ธ.ค.) 🔒</label>
+                </div>
+
+                <p style="margin-bottom: 10px; font-size: 14px; font-weight: 600; color: var(--text-main); margin-top:20px;"
+                    data-i18n="choose_icon">เลือกไอคอนโปรไฟล์</p>
+                <div class="icon-grid" id="icon-grid"></div>
+
+                <div class="checkbox-wrapper" style="margin-top:20px;">
+                    <input type="checkbox" id="ready-check">
+                    <label for="ready-check" data-i18n="ready_msg">พร้อมแล้ว!</label>
+                </div>
+
+                <button class="btn btn-primary" onclick="joinActivity()">
+                    <span data-i18n="btn_join">เข้าร่วมกิจกรรม</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="participants-screen" class="screen">
+            <div class="top-bar">
+                <button class="back-btn" onclick="runStepTransition('join-screen', 'loading')">←</button>
+                <h2 class="white-shadow" style="margin:0;" data-i18n="part_title">รายชื่อเพื่อน</h2>
+                <div style="width:40px;"></div>
+            </div>
+            <div class="card" style="flex: 1; display:flex; flex-direction:column; overflow:hidden;">
+                <div style="margin-bottom: 10px; font-size:14px; color: var(--text-light); flex-shrink: 0;">
+                    <span data-i18n="part_count">จำนวน</span>: <span id="p-count"
+                        style="color: var(--primary); font-weight:bold;">0</span>
+                </div>
+                <div id="participants-list" class="participant-list"></div>
+                <div class="participants-footer">
+                    <button class="btn btn-primary" onclick="goToSantaWish()">
+                        <span data-i18n="btn_santa_wish">ไปขอพรกับซานต้า</span> 🎅
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="wish-screen" class="screen">
+            <div class="top-bar">
+                <button class="back-btn"
+                    onclick="runStepTransition('participants-screen', 'to_participants')">←</button>
+                <h2 class="white-shadow" style="margin:0;" data-i18n="wish_header">ขอพรซานต้า</h2>
+                <div style="width:40px;"></div>
+            </div>
+
+            <div id="wish-form-container" class="card" style="background: rgba(255,255,255,0.95);">
+                <div class="santa-paper-container">
+                    <div class="santa-header-text">Dear Santa Claus,</div>
+                    <p style="text-align: center; font-size: 14px; color: #7f8c8d; margin-bottom:15px;"
+                        data-i18n="wish_subtitle">เขียนความในใจถึงซานต้า...</p>
+                    <div id="wish-countdown" class="wish-countdown"
+                        style="display:block; text-align:center; margin: 0 auto 15px;"></div>
+                    <div class="input-group">
+                        <input type="text" id="wish-nickname" placeholder="Name..." class="santa-input-clean">
+                    </div>
+                    <div class="input-group">
+                        <textarea id="wish-text" rows="4" placeholder="I wish for..." class="santa-input-clean"
+                            style="resize:none; line-height: 1.8;"></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="sendWish()">
+                    <span data-i18n="btn_send_santa">ส่งจดหมาย</span> 📨
+                </button>
+            </div>
+
+            <div id="santa-letter-view" class="santa-letter-container">
+                <div class="letter-card" id="letter-card-element">
+                    <div class="letter-content" id="letter-text"></div>
+
+
+                    <div class="letter-signature" data-i18n="letter_sign">จากซานต้า</div>
+                    <button class="btn-magic-hint" onclick="openSantaHint()">
+                        ✨ กดเพื่อเปิดคำใบ้จากซานต้า
+                    </button>
+                </div>
+
+                <div class="letter-btn-row">
+                    <button class="letter-action-btn btn-ghost-rewrite" onclick="resetWish()">เขียนใหม่ ✏️</button>
+                    <button class="letter-action-btn btn-ghost-rewrite" onclick="toggleSnapshot()">📸 ถ่ายรูป</button>
+                    <button class="letter-action-btn btn-keep-mini" onclick="saveLetterAndFinish()">เก็บจดหมาย
+                        📥</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="final-screen" class="screen">
+            <div class="string-lights"></div>
+            <div class="scene-decor"></div>
+            <div class="final-card">
+                <div class="final-msg-main">Merry Christmas</div>
+                <div class="final-msg-name" id="final-username"></div>
+                <div class="final-msg-sub">
+                    ขอบคุณที่แบ่งปันความรู้สึกและเรื่องราวให้กันในปีนี้นะ<br>
+                    ซานต้าขออวยพรให้หัวใจของคุณได้พักบ้าง<br>
+                    และมีสิ่งดี ๆ วิ่งเข้ามาหาคุณมากกว่าที่คุณเคยให้ใครหลายเท่า ❤️
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <button id="btn-go-to-video" style="
+                        background: linear-gradient(135deg, #FF6B6B, #C0392B);
+                        color: white;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 50px;
+                        font-family: var(--font-ui);
+                        font-size: 14px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        box-shadow: 0 4px 15px rgba(192, 57, 43, 0.3);
+                        transition: transform 0.2s, box-shadow 0.2s;
+                        display: flow-root; /* Fix for some layout issues */
+                        margin: 0 auto;
+                        align-items: center;
+                        gap: 8px;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <span>🎁</span> <span data-i18n="btn_open_gift">เปิดของขวัญชิ้นสุดท้าย</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="hint-overlay" class="hint-overlay" onclick="closeSantaHint()">
+            <div class="hint-card" onclick="event.stopPropagation()">
+                <div class="hint-icon">🔮</div>
+                <div class="hint-text-area">
+                    <div id="hint-text-content" class="hint-text"></div>
+                </div>
+                <button class="hint-close-btn" onclick="closeSantaHint()">ปิดคำใบ้</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SURPRISE VIDEO SECTION -->
+    <section id="surpriseVideo">
+        <video id="finalVideo" src="Final.mp4" playsinline preload="auto" controls></video>
+        <button id="videoPlayFallback" style="display:none;">
+            ✨ แตะเพื่อเล่นวิดีโอ ✨
+        </button>
+    </section>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxYILLi2zfNV8Gzz2eXrm2gGdB9LpdnYLYAPca8wJRJejbYledpqULrMyHX0BW_AQ-m/exec';
+
+        const ICONS = ['🎅', '🤶', '🦌', '⛄', '🐧', '🧸', '🍪', '🎀', '🎄', '👼', '🦄', '❄️'];
+
+        const TEXTS = {
+            th: {
+                splash_title: "เติมพลังบวกให้กัน\nในคืนคริสต์มาส 🎄",
+                splash_btn: "เริ่มกิจกรรม →",
+                splash_tagline: "เพราะทุกคำอวยพร คือของขวัญที่มีค่าที่สุด",
+                welcome_title: "วิธีเล่น (How to Play)",
+                welcome_body: "1. ลงชื่อเข้าร่วมกิจกรรม 📝\n2. เลือกไอคอนที่ชอบ 🎁\n3. ฝากคำอวยพรให้เพื่อนๆ\n4. เขียนจดหมายลับถึงซานต้า 🎅",
+                welcome_btn: "เข้าใจแล้ว!",
+                join_title: "เข้าร่วมแลกการ์ด", join_subtitle: "ส่งพลังบวกให้กัน", choose_icon: "เลือกไอคอนที่ชอบ",
+                short_wish_label: "ฝากคำอวยพรถึงทุกๆคน หรือ คนที่เราอยากฝากถึง",
+                short_wish_placeholder: "ขอให้ปีนี้ใจดีกับเธอ...",
+                lock_label: "Time Capsule (เปิด 25 ธ.ค.) 🔒", ready_msg: "พร้อมแล้ว!", btn_join: "เข้าร่วมกิจกรรม",
+                part_title: "รายชื่อเพื่อน", part_count: "จำนวน", btn_santa_wish: "ไปขอพรกับซานต้า", card_from: "การ์ดจาก", reaction_title: "รู้สึกยังไงกับการ์ดนี้?", btn_close_card: "ปิดการ์ดนี้",
+                wish_header: "ขอพรซานต้า", wish_title: "Dear Santa Claus", wish_subtitle: "เล่าเรื่องราวหรือสิ่งที่อยากได้...", btn_send_santa: "ส่งจดหมาย",
+                letter_received_title: "มีจดหมายถึงคุณ!", letter_received_desc: "ซานต้าอ่านข้อความแล้ว...", btn_open_letter: "เปิดจดหมาย", letter_sign: "จากซานต้าที่แอบเชียร์อยู่", btn_close: "เขียนใหม่",
+                btn_rewrite: "เขียนใหม่ ✏️", btn_save_letter: "เก็บจดหมายลงกล่อง 📥",
+                toast_join: "ลงชื่อสำเร็จ! 🎉", toast_err_name: "กรุณาใส่ชื่อก่อนนะ", toast_err_icon: "อย่าลืมเลือกไอคอน", toast_err_wish: "เขียนอะไรหน่อยสิ",
+                countdown_pre: "อีก $1 วันถึงคริสต์มาส 🎄", countdown_post: "คริสต์มาสผ่านมา $1 วันแล้ว",
+                loading_messages: [
+                    "กำลังเตรียมกล่องของขวัญของคุณ...",
+                    "กำลังโรยดาวฤกษ์ให้กล่อง...",
+                    "กำลังผูกริบบิ้นด้วยใจ...",
+                    "เกือบพร้อมแล้ว... ✨"
+                ]
+            },
+            en: {
+                splash_title: "Share good vibes\nthis Christmas 🎄",
+                splash_btn: "Start Now →",
+                splash_tagline: "Because every wish is the most precious gift",
+                welcome_title: "How to Play",
+                welcome_body: "1. Join the activity 📝\n2. Pick a cute icon 🎁\n3. Leave a wish for friends\n4. Write a secret letter to Santa 🎅",
+                welcome_btn: "Got it!",
+                join_title: "Join Exchange", join_subtitle: "Send good vibes", choose_icon: "Choose Cute Icon",
+                short_wish_label: "A wish for everyone (or someone special)",
+                short_wish_placeholder: "Wish you a great year...",
+                lock_label: "Time Capsule (Unlock Dec 25) 🔒", ready_msg: "I'm ready!", btn_join: "Join Activity",
+                part_title: "Participants", part_count: "Total", btn_santa_wish: "Wish to Santa", card_from: "Card from", reaction_title: "Reaction?", btn_close_card: "Close Card",
+                wish_header: "Wish to Santa", wish_title: "Dear Santa Claus", wish_subtitle: "Write to Santa...", btn_send_santa: "Send Letter",
+                letter_received_title: "You've got mail!", letter_received_desc: "Santa read your wish...", btn_open_letter: "Open Letter", letter_sign: "From Santa", btn_close: "Write New",
+                btn_rewrite: "Rewrite", btn_save_letter: "Keep Letter 📥",
+                toast_join: "Joined! 🎉", toast_err_name: "Enter name", toast_err_icon: "Pick an icon", toast_err_wish: "Write something",
+                countdown_pre: "$1 days to Christmas 🎄", countdown_post: "$1 days past Christmas",
+                loading_messages: [
+                    "Preparing your gift box...",
+                    "Sprinkling magical stardust...",
+                    "Tying ribbon with care...",
+                    "Almost ready... ✨"
+                ]
+            }
+        };
+
+        // --- SPECIAL YUMI LOGIC ---
+        function getDeepYumiMessage(wishText) {
+            // Analyze "depth" via length (simple heuristic)
+            const isLong = wishText.length > 50;
+            const msgs = [
+                `โฮ่ โฮ่ โฮ... ยูมิเด็กดี... ซานต้าอ่านทุกตัวอักษรที่หนูเขียนแล้วนะ สัมผัสได้ถึงความรู้สึกข้างในใจเลยล่ะ... ไม่ว่าหนูจะเจอเรื่องหนักหนาอะไรมา ขอให้รู้ว่าหนูเก่งและเข้มแข็งมากแค่ไหนที่ผ่านมันมาได้ การได้เป็นที่รักและถูกรักคือพรวิเศษที่สุดแล้ว ขอบคุณที่เกิดมาเป็นความสดใสให้โลกใบนี้ (และให้ใครบางคน) นะ รักษาหัวใจที่งดงามนี้ไว้ดีๆ ล่ะ ซานต้าเป็นกำลังใจให้เสมอ ❤️✨`,
+                `โฮ่ โฮ่ โฮ... ถึง ยูมิ... สิ่งที่หนูเขียนมันมีความหมายมากนะ ซานต้ารับรู้ได้ถึงความตั้งใจและความรู้สึกของหนู... บางครั้งโลกอาจจะใจร้ายไปบ้าง แต่หนูยังมีพื้นที่ปลอดภัยตรงนี้เสมอนะ ขอให้ความสุขที่หนูส่งต่อให้คนอื่น ย้อนกลับมาหาหนูเป็นร้อยเท่าพันเท่าเลยคนเก่ง... ยิ้มเยอะๆ นะ โลกนี้เหมาะกับรอยยิ้มของหนูที่สุดแล้ว 🎁🌸`,
+                `โฮ่ โฮ่ โฮ... ยูมิลูกรัก... ซานต้าประทับใจในความคิดและความอ่านของหนูจริงๆ... การเติบโตมันไม่ง่ายเลยใช่ไหม? แต่หนูทำได้ดีมากแล้วนะ ภูมิใจในตัวเองเถอะนะคนเก่ง... ขอให้ปีหน้าเป็นปีที่หนูได้ใช้ชีวิตในแบบที่ต้องการอย่างแท้จริง มีความสุขกับสิ่งเล็กๆ รอบตัวนะ... ซานต้ารักหนูนะ! 🎅💖`
+            ];
+            return msgs[Math.floor(Math.random() * msgs.length)];
+        }
+
+        const SANTA_MESSAGES = {
+            th: [
+                (name) => `โฮ่ โฮ่ โฮ... ${name} ปีนี้เธอเก่งมากเลยนะที่ผ่านเรื่องราวต่างๆ มาได้ ซานต้าขอมอบพลังใจก้อนใหญ่ให้เธอ พักผ่อนให้สบาย แล้วตื่นมาพร้อมกับรอยยิ้มนะคนเก่ง 🎁`,
+                (name) => `โฮ่ โฮ่ โฮ... สวัสดี ${name} ซานต้าเห็นนะว่าเธอพยายามแค่ไหนในปีที่ผ่านมา ไม่จำเป็นต้องเข้มแข็งตลอดเวลาก็ได้นะ อนุญาตให้ตัวเองมีความสุขเยอะๆ ล่ะ 🎄`,
+                (name) => `โฮ่ โฮ่ โฮ... ถึง ${name} ที่น่ารัก โลกนี้สดใสขึ้นเพราะมีรอยยิ้มของเธอรู้ไหม? ขอให้ปีหน้าเป็นปีที่ใจดีกับเธอเหมือนที่เธอใจดีกับคนรอบข้างนะ 🌟`,
+                (name) => `โฮ่ โฮ่ โฮ... ${name} เอ๋ย อย่าลืมขอบคุณตัวเองที่อดทนมาจนถึงวันนี้นะ ซานต้าภูมิใจในตัวเธอมาก ขอให้คืนนี้หลับฝันดี และตื่นมาพบกับความหวังใหม่นะ 🎅`
+            ],
+            en: [
+                (name) => `Ho Ho Ho... Dear ${name}, you've been incredibly strong this year. Santa wants you to know that it's okay to rest now. You deserve all the peace in the world. 🎁`,
+                (name) => `Ho Ho Ho... Hello ${name}! Santa has seen your efforts, even when no one else did. Be proud of how far you've come. Next year holds beautiful things for you. 🎄`,
+                (name) => `Ho Ho Ho... To my lovely ${name}, keep shining your light! The world is a better place with you in it. May your days be filled with as much joy as you give to others. 🌟`,
+                (name) => `Ho Ho Ho... ${name}, take a deep breath. You're doing just fine. Trust the journey and believe in the magic of new beginnings. Merry Christmas! 🎅`
+            ]
+        };
+
+        const SANTA_EASTER_MESSAGES = {
+            th: {
+                cat: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ถึง ${name} ทาสแมวผู้ยิ่งใหญ่! ซานต้าแอบเห็นนะว่าเจ้าเหมียวทำให้เธอมีความสุขแค่ไหน ดูแลพวกมันแล้วก็อย่าลืมดูแลหัวใจตัวเองด้วยนะ เมี้ยวๆ! 🐱`,
+                        `โฮ่ โฮ่ โฮ... ${name} จ๊ะ! การมีแมวอยู่ข้างๆ นี่มันดีจริงๆ เนอะ ซานต้ายังอยากเลี้ยงบ้างเลย! หอมหัวเจ้าเหมียวเผื่อซานต้าทีนึงนะ ขอให้มีความสุขท่วมท้นเลย! 🐈💕`,
+                        `โฮ่ โฮ่ โฮ... ${name}... รู้ไหมว่าเสียง 'เมี๊ยว' คือยารักษาใจชั้นดีเลยนะ! ปีหน้าก็ขอให้ได้เป็นที่รักของเจ้านายขนฟูแบบนี้ตลอดไปนะ ซานต้าให้ขนมแมวเลียเพิ่มหนึ่งถุง! 🐟`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                rest: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ${name} เด็กดี ซานต้าได้ยินเสียงถอนหายใจของเธอนะ ปีนี้เหนื่อยมาเยอะแล้วใช่ไหม? วางความกังวลลงเถอะนะคนเก่ง การพักผ่อนไม่ใช่ความผิดหรอก กอดตัวเองแน่นๆ นะ 💤`,
+                        `โฮ่ โฮ่ โฮ... ${name} ครับ... ร่างกายประท้วงแล้วนะรู้ตัวไหม? ฮ่าๆ ปิดสวิตช์ความเครียดเดี๋ยวนี้เลย! ไปหาเตียงนุ่มๆ แล้วทิ้งตัวลงนอนซะ พรุ่งนี้ค่อยว่ากันใหม่นะ ฝันดีจ้ะ! 🛌✨`,
+                        `โฮ่ โฮ่ โฮ... ${name}... ซานต้าสั่งให้หยุด! 🛑 หยุดคิดเรื่องงาน หยุดคิดเรื่องเครียด หายใจเข้าลึกๆ... เก่งมาก! ไปหาอะไรผ่อนคลายทำแล้วนอนยาวๆ เลยดีกว่า เธอสมควรได้รับรางวัลแล้ว! 🎁`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                mom: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... แด่ ${name} คนที่ทำเพื่อคนอื่นเสมอ ความรักของครอบครัวคือเวทมนตร์วิเศษ แต่ซานต้าอยากบอกว่า ความสุขของเธอเองก็สำคัญไม่แพ้กันนะ รักตัวเองให้มากๆ ล่ะ ❤️`,
+                        `โฮ่ โฮ่ โฮ... ${name} จ๊ะ! ครอบครัวภูมิใจในตัวเธอเสมอแหละ ไม่ต้องแบกโลกทั้งใบไว้คนเดียวนะ แบ่งเบาให้คนอื่นบ้างก็ได้ เธอทำดีที่สุดแล้วจริงๆ ซานต้ากอดๆ นะ 🏡✨`,
+                        `โฮ่ โฮ่ โฮ... ${name}... การดูแลครอบครัวมันเหนื่อยแต่ก็สุขใจเนอะ... ซานต้าขอเสกพลังพิเศษให้เธอแข็งแรงๆ จะได้เป็นร่มโพธิ์ร่มไทรให้คนที่เธอรักไปนานๆ แต่ห้ามลืมดูแลตัวเองเด็ดขาดนะ! 🌳❤️`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                xmas: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ! เมอร์รี่คริสต์มาสนะ ${name}! ขอให้เทศกาลแห่งความสุขนี้ปัดเป่าความหมองหม่นในใจเธอไปจนหมดสิ้น ให้มีแต่แสงสว่างและความอบอุ่นเข้ามาแทนที่นะ! 🎄✨`,
+                        `โฮ่ โฮ่ โฮ... ${name}! คริสต์มาสไม่ได้มีแค่วันเดียวแต่มันอยู่ในใจเราเสมอ 🎅 ขอให้ความสุขในวันนี้อยู่กับเธอไปตลอดทั้งปีเลยนะ ยิ้มกว้างๆ รับของขวัญจากฟ้าเร็ว! 🎁`,
+                        `โฮ่ โฮ่ โฮ... ${name} จ๋า! วันนี้วันดีนะ ออกไปสูดอากาศดีๆ หรือฟังเพลงเพราะๆ ให้ฉ่ำปอดไปเลย! ซานต้าขออวยพรให้ปีหน้ามีแต่เรื่องให้หัวเราะจนท้องแข็งเลยนะ! 😆🎉`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                love: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ${name} เรื่องหัวใจมันบังคับกันไม่ได้ แต่ซานต้าบอกได้เลยว่า ความรักดีๆ มักจะมาตอนที่เรารักตัวเองมากพอ ยิ้มเข้าไว้นะ เสน่ห์ของเธออยู่ที่รอยยิ้มนี่แหละ ❤️`,
+                        `โฮ่ โฮ่ โฮ... ${name}... หัวใจสีชมพูรึเปล่าน๊าช่วงนี้? ฮั่นแน่! ไม่ว่าสถานะจะเป็นยังไง ขอให้หัวใจเธอเต้นแรงด้วยความสุขเสมอนะ ความรักอยู่รอบตัวเธอนั่นแหละ มองดีๆ สิ! 💖👀`,
+                        `โฮ่ โฮ่ โฮ... ${name} ครับ... บางทีความรักก็เหมือนรถเมล์ รอตั้งนานไม่มา พอจะมาก็มาพร้อมกันสองคัน! ฮ่าๆ ใจเย็นๆ นะ เดี๋ยวคนศีลเสมอกันก็จะเหวี่ยงมาเจอกันเองแหละ เชื่อซานต้า! 🚌💕`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                money: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ${name} อยากเป็นเศรษฐีเหรอ? ซานต้าเห็นความขยันของเธอแล้ว ปีหน้าโอกาสทองมารอหน้าประตูแน่ๆ เตรียมกระเป๋าตังค์ใบใหญ่ไว้ใส่โบนัสได้เลย! 💰`,
+                        `โฮ่ โฮ่ โฮ... ${name}! เงินทองไหลมาเทมาเพี้ยง! 💸 ปีหน้าขอให้หยิบจับอะไรก็เป็นเงินเป็นทองนะ แต่จำไว้ว่า 'สุขภาพสำคัญกว่าเงิน' นะจ๊ะ รวยแล้วต้องแข็งแรงด้วยนะ! 💪`,
+                        `โฮ่ โฮ่ โฮ... ${name}... ซานต้าได้กลิ่นธนบัตรใหม่ๆ ลอยมาทางนี้นะ! สงสัยปีหน้าจะมีคนดวงเฮงถูกหวยรวยเบอร์แน่ๆ (ถ้าถูกแล้วอย่าลืมแบ่งซานต้าบ้างนะ ฮ่าๆ ล้อเล่นจ้ะ!) 🤑🎫`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                health: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ${name} จ๊ะ การกินของอร่อยคือความสุขที่ยิ่งใหญ่ที่สุดนะ! 🍰 ไม่ต้องคิดมากเลย เธอน่ะดูดีที่สุดเวลาที่มีความสุขรู้ไหม? กินให้อิ่ม นอนให้หลับ ขอให้ปีหน้าสุขภาพแข็งแรง สดใส เปล่งปลั่ง มีพลังไปเที่ยวและกินของอร่อยๆ ได้ทั้งปีเลยนะ! 🥗🥑`,
+                        `โฮ่ โฮ่ โฮ... ${name}... พักผ่อนให้พอนะรู้ไหม? การนอนหลับคือยาวิเศษที่ดีกว่าวิตามินใดๆ ซานต้าขอเสกเกราะป้องกันไวรัสให้เธอหนึ่งชั้น! ดูแลตัวเองดีๆ แล้วร่างกายจะตอบแทนเธอด้วยพลังงานล้นเหลือ! 🛡️⚡`,
+                        `โฮ่ โฮ่ โฮ... ${name} ครับ! อย่าลืมดื่มน้ำเยอะๆ และสูดอากาศบริสุทธิ์นะ 🌿 ร่างกายที่แข็งแรงจะพาเธอไปพบกับประสบการณ์ใหม่ๆ อีกเพียบ ขอให้ปีหน้าไม่มีคำว่า 'ป่วย' ในพจนานุกรมของเธอนะ เพี้ยง! 💊❌`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                study: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ${name} นักสู้กระดาษคำตอบ! ความพยายามไม่เคยทรยศใครนะ พักสมองบ้าง แล้วกลับไปลุยต่อ ซานต้าเสกเกรดให้ไม่ได้ แต่เสกกำลังใจให้เธอ A+ ไปเลย! 📚`,
+                        `โฮ่ โฮ่ โฮ... ${name}... การเรียนมันหนัก แต่เธอก็เก่งมากที่ประคองมันมาได้! จำไว้นะว่าเกรดไม่ใช่ทุกอย่างของชีวิต แต่ความรู้จะอยู่ติดตัวเธอตลอดไป ลุยให้เต็มที่ แล้วไปฉลองให้สุดเหวี่ยงเลย! 🎓🎉`,
+                        `โฮ่ โฮ่ โฮ... ${name} จ๋า! เครียดสอบเหรอ? หายใจลึกๆ... สมองเธอเจ๋งกว่าที่คิดเยอะ! ซานต้าเชื่อว่าเธอทำได้ อ่านตรงไหนก็ขอให้ออกตรงนั้นนะ เพี้ยง! 📖✨`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                vent: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ${name}... ซานต้ารับรู้ถึงความเจ็บปวดที่เธอแบกไว้นะ การร้องไห้ไม่ใช่เรื่องน่าอายหรอก ระบายมันออกมาเถอะ น้ำตาจะช่วยชะล้างใจให้ใสสะอาด พรุ่งนี้เธอจะเข้มแข็งกว่าเดิมแน่นอน กอดนะคนเก่ง 🌧️✨`,
+                        `โฮ่ โฮ่ โฮ... ${name}... วันนี้มันแย่ใช่ไหม? ไม่เป็นไรนะ วันแย่ๆ มีไว้ให้เรารู้ว่าวันดีๆ มันมีค่าแค่ไหน ฟ้าหลังฝนสวยงามเสมอ อดทนอีกนิดนะ แสงสว่างกำลังรอเธออยู่ 🌈`,
+                        `โฮ่ โฮ่ โฮ... ${name} ครับ... ใครทำอะไรให้เจ็บช้ำน้ำใจ ฟ้องซานต้ามาได้เลย! เดี๋ยวซานต้าจัดการจดชื่อลงบัญชีดำให้! 😈 ฮ่าๆ ยิ้มเข้าไว้นะ อย่าให้คนใจร้ายมาขโมยความสุขไปจากเราได้ เรามีค่ามากกว่านั้นเยอะ! 💎`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                hope: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ${name} ผู้มีความฝัน! แววตาของเธอเวลาพูดถึงสิ่งที่อยากทำมันเป็นประกายสวยมากเลยนะ อย่าให้ใครมาดับฝันนั้นได้ล่ะ ซานต้าเชื่อว่าเธอทำได้ และปีหน้าจะเป็นปีที่เธอเฉิดฉายที่สุด! 🚀⭐`,
+                        `โฮ่ โฮ่ โฮ... ${name}... การเริ่มต้นใหม่อาจจะน่ากลัว แต่มันคือก้าวแรกสู่ดินแดนมหัศจรรย์นะ! กล้าที่จะก้าวออกมา แล้วเธอจะพบว่าตัวเองเก่งกว่าที่คิดเยอะเลย ลุยเลย! 🌍✨`,
+                        `โฮ่ โฮ่ โฮ... ${name} จ๊ะ! ความหวังคือเชื้อเพลิงของชีวิตนะ อย่าหมดหวังเด็ดขาด! ซานต้าเอาใจช่วยทุกย่างก้าว ปีหน้าฟ้าใหม่ ขอให้เป็นปีทองของเธอนะ! 🏆`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                },
+                friend: (name) => {
+                    const msgs = [
+                        `โฮ่ โฮ่ โฮ... ${name} มิตรภาพคือของขวัญที่ล้ำค่าที่สุดนะ ดีใจด้วยที่เธอมีกัลยาณมิตรที่ดี การมีเพื่อนที่เข้าใจมองตาก็รู้ใจแบบนี้ รักษาพวกเขาไว้ดีๆ ล่ะ เมอร์รี่คริสต์มาสแด่มิตรภาพ! 👯‍♀️🎉`,
+                        `โฮ่ โฮ่ โฮ... ${name}! เพื่อนสนิทคือคนที่เราบ้าด้วยได้โดยไม่อายใครจริงไหม? 🤪 รักษาความสัมพันธ์น่ารักๆ แบบนี้ไว้นะ ปีหน้าชวนกันไปสร้างวีรกรรมฮาๆ อีกเยอะๆ เลย! 🤣`,
+                        `โฮ่ โฮ่ โฮ... ${name}... ฝากบอกเพื่อนๆ ของเธอด้วยนะว่าซานต้าชื่นชมมิตรภาพของพวกเธอจัง! การได้หัวเราะกับเพื่อนคือยาวิเศษจริงๆ ขอให้เกาะกลุ่มรักกันเหนียวแน่นแบบนี้ตลอดไปนะ! 🤝❤️`
+                    ];
+                    return msgs[Math.floor(Math.random() * msgs.length)];
+                }
+            },
+            en: {
+                cat: (name) => `Ho Ho Ho... To ${name}, the cat whisperer! Santa knows those furry friends are your real comfort. Give them a pet from me. 🐱`,
+                rest: (name) => `Ho Ho Ho... Oh, ${name}, it's okay to put the weight of the world down. You don't have to carry it alone. Just breathe and rest now. 💤`,
+                mom: (name) => `Ho Ho Ho... Dearest ${name}, your heart for your family is pure. But remember, Santa wants you to take care of yourself too. ❤️`,
+                xmas: (name) => `Ho Ho Ho! Merry Christmas, ${name}! May the magic of this night fill your heart with hope. Santa is rooting for you! 🎄✨`,
+                love: (name) => `Ho Ho Ho... ${name}, true love finds you when you start loving yourself. Keep smiling, your charm is irresistible! ❤️`,
+                money: (name) => `Ho Ho Ho... ${name}, aiming for the jackpot? Your hard work is shining bright. Next year brings golden opportunities! 💰`,
+                health: (name) => `Ho Ho Ho... ${name}, health starts with happiness! Enjoy your meals and don't be too hard on yourself. Stay strong! 🥗`,
+                study: (name) => `Ho Ho Ho... ${name}, the academic warrior! Efforts never betray anyone. Take a break, then keep fighting. A+ for your spirit! 📚`,
+                vent: (name) => `Ho Ho Ho... ${name}... Santa feels the heavy burden you carry. It's okay to let it out. Tears cleanse the soul. You will rise stronger tomorrow. Big hug! 🌧️✨`,
+                hope: (name) => `Ho Ho Ho... ${name}, the dreamer! Your eyes sparkle when you think of the future. Don't let anyone dim that light. Next year is your time to shine! 🚀⭐`,
+                friend: (name) => `Ho Ho Ho... ${name}, friendship is the greatest gift! You are blessed with good company. Cherish those connections. Merry Christmas to you and your besties! 👯‍♀️🎉`
+            }
+        };
+
+        let currentLang = localStorage.getItem('xmas_lang') || 'th';
+        let selectedIconIndex = -1;
+        let giftClicks = 0;
+        let currentUser = JSON.parse(localStorage.getItem('xmas_user')) || null;
+        let currentProfileId = null;
+
+        // --- NEW FEATURES VARIABLES ---
+        let hesitationCount = 0;
+        const HESITATION_THRESHOLD = 12;
+
+        /* --- INIT --- */
+        // ... (Existing Init Code) ...
+
+        // --- NEW KEYWORD LOGIC ---
+        function pickSantaMessage(name, wishText, lang) {
+            // SPECIAL MESSAGE FOR YUMI/KAEWCHA (Dynamic & Magical)
+            if (lang === 'th' && (name.includes('ยูมิ') || name.includes('แก้วชา'))) {
+                return getDeepYumiMessage(wishText);
+            }
+
+            const text = wishText.toLowerCase(); const egg = SANTA_EASTER_MESSAGES[lang];
+            const keys = {
+                cat: ['cat', 'kitten', 'meow', 'kitty', 'แมว', 'เหมียว', 'น้อง', 'ทาส', 'dog', 'หมา', 'สัตว์'],
+
+                // Expanded 'rest' categories to include more venting keywords
+                rest: ['tired', 'burnout', 'exhausted', 'sad', 'cry', 'tough', 'hard', 'stress', 'เหนื่อย', 'ท้อ', 'ล้า', 'เครียด', 'ร้องไห้', 'หนัก', 'พัก', 'หมดไฟ', 'sleep', 'นอน', 'เจ็บปวด', 'แย่', 'พัง', 'ผิดหวัง'],
+
+                vent: ['ระบาย', 'ใจร้าย', 'ไม่ไหว', 'เกลียด', 'เบื่อ', 'unhappy', 'hate', 'bad year', 'worst', 'fail', 'ล้มเหลว'],
+
+                hope: ['hope', 'dream', 'wish', 'future', 'goal', 'start', 'begin', 'new year', 'ความฝัน', 'หวัง', 'อนาคต', 'เริ่ม', 'ตั้งใจ', 'เป้าหมาย', 'ดีขึ้น', 'เปลี่ยนแปลง'],
+
+                friend: ['friend', 'bestie', 'gang', 'เพื่อน', 'มิตร', 'แก๊ง'],
+
+                mom: ['mom', 'mother', 'dad', 'father', 'family', 'parents', 'แม่', 'พ่อ', 'ครอบครัว', 'ป๊า', 'ม้า', 'บ้าน', 'พี่', 'น้อง'],
+                xmas: ['christmas', 'xmas', 'gift', 'present', 'tree', 'คริสต์มาส', 'ปีใหม่', 'ของขวัญ', 'santa', 'ซานต้า', 'party', 'ฉลอง'],
+                love: ['love', 'crush', 'boyfriend', 'girlfriend', 'single', 'lonely', 'heart', 'แฟน', 'โสด', 'เหงา', 'รัก', 'อกหัก', 'จีบ', 'คู่', 'แต่งงาน'],
+                money: ['money', 'rich', 'work', 'job', 'bonus', 'salary', 'gold', 'เงิน', 'รวย', 'งาน', 'โบนัส', 'หวย', 'ลาภ', 'เศรษฐี', 'หนี้', 'ถูกรางวัล'],
+                health: ['health', 'diet', 'weight', 'fat', 'thin', 'sick', 'pain', 'gym', 'อ้วน', 'ผอม', 'ลดน้ำหนัก', 'ป่วย', 'เจ็บ', 'สุขภาพ', 'ออกกำลัง', 'แข็งแรง'],
+                study: ['study', 'exam', 'grade', 'school', 'university', 'test', 'pass', 'เรียน', 'สอบ', 'เกรด', 'มหาลัย', 'โรงเรียน', 'คะแนน', 'thesis', 'ธีซิส', 'จบ']
+            };
+
+            // Check keys in priority
+            if (keys.vent.some(k => text.includes(k))) return egg.vent(name);
+            if (keys.cat.some(k => text.includes(k))) return egg.cat(name);
+            if (keys.rest.some(k => text.includes(k))) return egg.rest(name);
+            if (keys.mom.some(k => text.includes(k))) return egg.mom(name);
+            if (keys.love.some(k => text.includes(k))) return egg.love(name);
+            if (keys.money.some(k => text.includes(k))) return egg.money(name);
+            if (keys.health.some(k => text.includes(k))) return egg.health(name);
+            if (keys.study.some(k => text.includes(k))) return egg.study(name);
+            if (keys.friend.some(k => text.includes(k))) return egg.friend(name);
+            if (keys.hope.some(k => text.includes(k))) return egg.hope(name);
+            if (keys.xmas.some(k => text.includes(k))) return egg.xmas(name);
+
+            const normal = SANTA_MESSAGES[lang]; return normal[Math.floor(Math.random() * normal.length)](name);
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                updateAppHeight();
+                renderIcons();
+                updateLangUI();
+                createSnow();
+                updateMuteIcon();
+                startMainCountdown();
+
+                // Debug: Double click to trigger storm
+                document.body.addEventListener('dblclick', () => {
+                    console.log("Debug: Triggering Snow Storm");
+                    SnowStormController.trigger();
+                });
+
+                const splashImg = document.getElementById('splash-logo-img');
+                if (splashImg) {
+                    if (splashImg.complete) splashImg.style.opacity = '1';
+                    else splashImg.addEventListener('load', () => splashImg.style.opacity = '1');
+                }
+
+                window.addEventListener('scroll', () => {
+                    const y = window.scrollY;
+                    const h1 = document.querySelector('.layer-hill-1');
+                    const h2 = document.querySelector('.layer-hill-2');
+                    if (h1) h1.style.transform = `translateY(${20 + y * 0.1}px)`;
+                    if (h2) h2.style.transform = `translateY(${y * 0.2}px)`;
+                });
+
+                showScreen('join-screen');
+                if (currentUser) {
+                    const nickInput = document.getElementById('nickname-input');
+                    if (nickInput) nickInput.value = currentUser.nickname;
+                    if (currentUser.wishShort) {
+                        const wishInput = document.getElementById('short-wish-input');
+                        if (wishInput) wishInput.value = currentUser.wishShort;
+                    }
+                    selectedIconIndex = currentUser.iconId;
+                    renderIcons();
+                    const readyCheck = document.getElementById('ready-check');
+                    if (readyCheck) readyCheck.checked = true;
+                }
+
+                // *** NEW: Hesitation Sensor Event Listener ***
+                const wishInput = document.getElementById('wish-text');
+                if (wishInput) {
+                    wishInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' || e.key === 'Delete') {
+                            hesitationCount++;
+                        }
+                    });
+                }
+
+                // Splash Loading Animation with Story Messages
+                setTimeout(() => {
+                    const bar = document.getElementById('loading-fill');
+                    const messageEl = document.getElementById('loading-message');
+                    const messages = TEXTS[currentLang].loading_messages;
+
+                    if (bar) bar.style.width = '100%';
+
+                    // Cycle through loading messages
+                    if (messageEl && messages) {
+                        let msgIndex = 0;
+                        const messageInterval = setInterval(() => {
+                            msgIndex++;
+                            if (msgIndex < messages.length) {
+                                messageEl.style.opacity = '0';
+                                setTimeout(() => {
+                                    messageEl.textContent = messages[msgIndex];
+                                    messageEl.style.opacity = '0.8';
+                                }, 200);
+                            } else {
+                                clearInterval(messageInterval);
+                            }
+                        }, 500); // Change message every 500ms
+                    }
+                }, 300);
+
+                setTimeout(() => {
+                    const btn = document.getElementById('splash-enter-btn');
+                    if (btn) btn.classList.add('visible');
+                }, 1500);
+
+            } catch (e) {
+                console.error("Init Error:", e);
+                setTimeout(() => {
+                    const btn = document.getElementById('splash-enter-btn');
+                    if (btn) { btn.style.opacity = '1'; btn.style.transform = 'scale(1)'; }
+                }, 1000);
+            }
+
+            // *** FIX: Floating Labels Logic & Placeholder Overlap ***
+            const inputs = document.querySelectorAll('.input-group input, .input-group textarea');
+            inputs.forEach(input => {
+                // Initial check
+                if (input.value.trim() !== '') {
+                    input.closest('.input-group').classList.add('has-content');
+                }
+
+                // Events
+                input.addEventListener('focus', () => {
+                    input.closest('.input-group').classList.add('has-content');
+                });
+                input.addEventListener('blur', () => {
+                    if (input.value.trim() === '') {
+                        input.closest('.input-group').classList.remove('has-content');
+                    }
+                });
+                input.addEventListener('input', () => {
+                    // Keep label up if typing
+                });
+            });
+
+            // Inject CSS to hide placeholder when label is down (not focused)
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .input-group textarea::placeholder,
+                .input-group input::placeholder {
+                    color: transparent;
+                    transition: color 0.2s;
+                }
+                .input-group textarea:focus::placeholder, 
+                .input-group input:focus::placeholder {
+                    color: #aaa; /* Show when focused */
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        /* --- FUNCTIONS --- */
+        function escapeHtml(text) { if (!text) return ""; return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+        function triggerHaptic() { if (navigator.vibrate) navigator.vibrate(10); }
+        function toggleMute() {
+            const isMuted = localStorage.getItem('xmas_sfx_muted') === '1';
+            localStorage.setItem('xmas_sfx_muted', isMuted ? '0' : '1');
+            updateMuteIcon();
+            const bgm = document.getElementById('bgm-main');
+            if (isMuted) bgm.play().catch(() => { }); else bgm.pause();
+        }
+        function updateMuteIcon() {
+            const isMuted = localStorage.getItem('xmas_sfx_muted') === '1';
+            document.getElementById('mute-icon').innerText = isMuted ? '🔇' : '🔊';
+        }
+        function playSfx(id) {
+            triggerHaptic();
+            const isMuted = localStorage.getItem('xmas_sfx_muted') === '1';
+            if (isMuted) return;
+            const el = document.getElementById(id);
+            if (el) { el.currentTime = 0; el.play().catch(() => { }); }
+        }
+        // ========== CANVAS SNOW SYSTEM (Performance Optimized) ==========
+        class CanvasSnow {
+            constructor(canvasId, particleCount = 50) {
+                this.canvas = document.getElementById(canvasId);
+                if (!this.canvas) return;
+
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.particleCount = particleCount;
+                this.isStorming = false;
+
+                this.resize();
+                this.init();
+                this.animate();
+
+                // Handle resize
+                window.addEventListener('resize', () => this.resize());
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            init() {
+                for (let i = 0; i < this.particleCount; i++) {
+                    this.particles.push(this.createParticle());
+                }
+            }
+
+            createParticle(forceTop = false) {
+                return {
+                    x: Math.random() * this.canvas.width,
+                    y: forceTop ? -10 : Math.random() * this.canvas.height,
+                    radius: Math.random() * 2 + 1,
+                    speed: Math.random() * 0.5 + 0.3,
+                    drift: Math.random() * 0.5 - 0.25,
+                    opacity: Math.random() * 0.5 + 0.3
+                };
+            }
+
+            update() {
+                this.particles.forEach((p, index) => {
+                    const speedMultiplier = this.isStorming ? 4 : 1;
+                    p.y += p.speed * speedMultiplier;
+                    p.x += p.drift;
+
+                    // Reset particle if off screen
+                    if (p.y > this.canvas.height) {
+                        this.particles[index] = this.createParticle(true);
+                    }
+
+                    // Wrap horizontally
+                    if (p.x > this.canvas.width) p.x = 0;
+                    if (p.x < 0) p.x = this.canvas.width;
+                });
+            }
+
+            draw() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.particles.forEach(p => {
+                    this.ctx.beginPath();
+                    this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    this.ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                    this.ctx.fill();
+                });
+            }
+
+            animate() {
+                this.update();
+                this.draw();
+                requestAnimationFrame(() => this.animate());
+            }
+
+            triggerStorm() {
+                this.isStorming = true;
+                // Add extra particles
+                const extraCount = 30;
+                for (let i = 0; i < extraCount; i++) {
+                    this.particles.push(this.createParticle(true));
+                }
+
+                setTimeout(() => {
+                    this.isStorming = false;
+                    // Remove extra particles
+                    this.particles.splice(this.particleCount, extraCount);
+                }, 3000);
+            }
+        }
+
+        let snowSystem = null;
+        function createSnow() {
+            snowSystem = new CanvasSnow('snow-canvas', 50);
+        }
+        function runStepTransition(targetScreenId, messageKey) {
+            playSfx('sfx-nav');
+            // Direct transition without redundant loader
+            setTimeout(() => {
+                if (targetScreenId === 'participants-screen') showParticipants();
+                else if (targetScreenId === 'wish-screen') showWishScreen();
+                else showScreen(targetScreenId);
+            }, 100);
+        }
+
+        function enterApp() {
+            document.body.classList.add('app-ready');
+            const bgm = document.getElementById('bgm-main');
+
+            // Respect mute setting from previous session
+            const isMuted = localStorage.getItem('xmas_sfx_muted') === '1';
+            updateMuteIcon();
+
+            if (!isMuted) {
+                bgm.volume = 0.5;
+                const playPromise = bgm.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Audio autoplay prevented by browser - waiting for interaction");
+                        // Add a one-time click listener to start audio
+                        document.addEventListener('click', () => {
+                            if (bgm.paused && localStorage.getItem('xmas_sfx_muted') !== '1') {
+                                bgm.play();
+                            }
+                        }, { once: true });
+                    });
+                }
+            }
+
+            // Request Shake Permission (iOS)
+            ShakeDetector.requestPermission().then(granted => {
+                if (granted) {
+                    shaker.start(() => SnowStormController.trigger());
+                }
+            });
+
+            const introSeen = localStorage.getItem('xmas_intro_seen_v2') === '1';
+            if (!introSeen) {
+                setTimeout(() => {
+                    document.getElementById('welcome-modal').classList.remove('hidden');
+                    requestAnimationFrame(() => document.getElementById('welcome-modal').classList.add('active'));
+                }, 600);
+            }
+        }
+        function closeWelcomePopup() {
+            localStorage.setItem('xmas_intro_seen_v2', '1');
+            const modal = document.getElementById('welcome-modal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.classList.add('hidden'), 400);
+        }
+        function setLang(lang) { currentLang = lang; localStorage.setItem('xmas_lang', lang); document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); updateLangUI(); }
+        function updateLangUI() {
+            const t = TEXTS[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (t[key]) el.innerText = t[key]; });
+            const nickInput = document.getElementById('nickname-input');
+            if (currentLang === 'en') { nickInput.placeholder = "Nickname"; document.getElementById('short-wish-input').placeholder = TEXTS.en.short_wish_placeholder; document.getElementById('wish-text').placeholder = "Dear Santa..."; }
+            else { nickInput.placeholder = "ชื่อเล่น / Nickname"; document.getElementById('short-wish-input').placeholder = TEXTS.th.short_wish_placeholder; document.getElementById('wish-text').placeholder = "ถึงคุณซานต้า..."; }
+            updateCountdown();
+        }
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.classList.add('active');
+                target.scrollTop = 0;
+
+                // Trigger Falling Animation for Cards inside the screen
+                const cards = target.querySelectorAll('.card');
+                cards.forEach(card => {
+                    card.classList.remove('animate-enter');
+                    void card.offsetWidth; // Trigger reflow
+                    card.classList.add('animate-enter');
+                });
+
+                // Play SFX for the falling effect
+                playSfx('sfx-unwrap'); // Using unwrap sound as a placeholder for paper sound
+            }
+            updateAppHeight();
+        }
+
+        function renderIcons() { const grid = document.getElementById('icon-grid'); grid.innerHTML = ''; ICONS.forEach((icon, idx) => { const el = document.createElement('div'); el.className = `icon-option ${idx === selectedIconIndex ? 'selected' : ''}`; el.innerHTML = icon; el.onclick = () => { selectedIconIndex = idx; renderIcons(); }; grid.appendChild(el); }); }
+
+        function startMainCountdown() {
+            const dEl = document.getElementById('main-cd-d'); const hEl = document.getElementById('main-cd-h'); const mEl = document.getElementById('main-cd-m'); const sEl = document.getElementById('main-cd-s');
+            function update() {
+                const now = new Date(); const target = new Date(now.getFullYear(), 11, 25);
+                if (now.getMonth() === 11 && now.getDate() > 25) target.setFullYear(target.getFullYear() + 1);
+                let diff = target - now; if (diff <= 0) diff = 0;
+                dEl.innerText = Math.floor(diff / (86400000)).toString().padStart(2, '0'); hEl.innerText = Math.floor((diff % 86400000) / 3600000).toString().padStart(2, '0'); mEl.innerText = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0'); sEl.innerText = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+            }
+            update(); setInterval(update, 1000);
+        }
+        function showToast(msg, isError = false) { const toast = document.getElementById('toast'); toast.className = isError ? 'error' : ''; toast.querySelector('.toast-msg').innerText = msg; toast.querySelector('.toast-icon').innerText = isError ? '⚠️' : '✓'; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
+
+        function joinActivity() {
+            const nickname = document.getElementById('nickname-input').value.trim();
+            let shortWish = document.getElementById('short-wish-input').value.trim();
+            if (!nickname) { showToast(TEXTS[currentLang].toast_err_name, true); return; }
+            if (selectedIconIndex === -1) { showToast(TEXTS[currentLang].toast_err_icon, true); return; }
+            const safeNick = escapeHtml(nickname);
+            let safeWish = escapeHtml(shortWish);
+            if (document.getElementById('lock-wish').checked) safeWish = "[[LOCKED]]" + safeWish;
+            const user = { id: Date.now(), nickname: safeNick, email: "", media: "", iconId: selectedIconIndex, stickerId: 0, wishShort: safeWish, joinedAt: new Date().toISOString() };
+            localStorage.setItem('xmas_user', JSON.stringify(user)); currentUser = user;
+            fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'addParticipant', nickname: user.nickname, iconId: user.iconId, shortWish: user.wishShort, lang: currentLang }) }).catch(() => { });
+            let participants = JSON.parse(localStorage.getItem('xmas_participants') || '[]'); participants.push(user); localStorage.setItem('xmas_participants', JSON.stringify(participants));
+            showToast(TEXTS[currentLang].toast_join); triggerGiftRain(); playSfx('sfx-join');
+            const joinLoader = document.getElementById('join-loader'); joinLoader.classList.remove('hidden'); requestAnimationFrame(() => joinLoader.classList.add('active'));
+            setTimeout(() => { showParticipants().then(() => { setTimeout(() => { joinLoader.classList.remove('active'); setTimeout(() => joinLoader.classList.add('hidden'), 500); }, 1000); }); }, 1500);
+        }
+
+        function triggerGiftRain() { const count = 15; for (let i = 0; i < count; i++) { const gift = document.createElement('div'); gift.className = 'falling-gift'; gift.innerHTML = ['🎁', '🍬', '🎄', '⭐'][Math.floor(Math.random() * 4)]; gift.style.left = Math.random() * 100 + 'vw'; gift.style.animationDuration = (2 + Math.random() * 3) + 's'; gift.style.fontSize = (20 + Math.random() * 20) + 'px'; document.body.appendChild(gift); setTimeout(() => gift.remove(), 5000); } }
+
+        async function fetchParticipantsFromApi() {
+            try {
+                const res = await fetch(API_URL + '?action=listParticipants');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.status === 'ok' && Array.isArray(data.participants)) {
+                        return data.participants.map(p => ({
+                            ...p,
+                            // Ensure ID exists (generate from timestamp+name if missing) to fix Reaction Bug
+                            id: p.id || (p.joinedAt + p.nickname).replace(/[^a-zA-Z0-9]/g, ''),
+                            nickname: escapeHtml(p.nickname),
+                            wishShort: escapeHtml(p.shortWish)
+                        }));
+                    }
+                }
+            } catch (err) { }
+            return JSON.parse(localStorage.getItem('xmas_participants') || '[]');
+        }
+        async function showParticipants() {
+            const container = document.getElementById('participants-list'); const countEl = document.getElementById('p-count'); container.innerHTML = Array(5).fill('<div class="skeleton-item"></div>').join('');
+            const list = await fetchParticipantsFromApi(); container.innerHTML = ''; countEl.innerText = list.length;
+            if (list.length === 0) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">☃️</div><h3>ยังเงียบเหงาอยู่เลย</h3><p>มาเป็นคนแรกกันเถอะ!</p></div>`; }
+            else {
+                [...list].reverse().forEach((p, idx) => {
+                    const luckyNumber = String(list.length - idx).padStart(3, '0'); const date = new Date(p.joinedAt || Date.now()); const timeStr = date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+                    const item = document.createElement('div'); item.className = 'participant-item'; item.onclick = function () { openProfileModal(p, luckyNumber, this); };
+                    item.innerHTML = `<div class="p-avatar">${ICONS[p.iconId] || '🙂'}</div><div class="p-info"><span class="p-name">${p.nickname}</span><span class="p-time">Joined at ${timeStr}</span></div><span class="p-badge">#${luckyNumber}</span>`;
+                    container.appendChild(item);
+                });
+            }
+            showScreen('participants-screen');
+        }
+
+
+
+        /* --- FLIP MORPHING TRANSITION --- */
+        function openProfileModal(participant, luckyNum, sourceEl) {
+            currentProfileId = participant.id;
+            const modal = document.getElementById('profile-modal');
+            const card = modal.querySelector('.profile-card');
+
+            // 1. First: Get starting rect
+            let firstRect = null;
+            if (sourceEl) {
+                firstRect = sourceEl.getBoundingClientRect();
+                sourceEl.style.opacity = '0'; // Hide source temporarily
+            }
+
+            // Update Content
+            document.getElementById('profile-lucky-num').innerText = '#' + luckyNum;
+            document.getElementById('profile-avatar').innerHTML = ICONS[participant.iconId] || '🎅';
+            document.getElementById('profile-name').innerText = participant.nickname;
+            document.getElementById('profile-wish').innerText = participant.wishShort || "...";
+
+            // Reset & Load Reactions (FIX: Ensure button state is correct)
+            loadReactions(participant.id);
+            // Fallback for counts if not loaded from localstorage yet (fetched from API)
+            if (participant.reactions) {
+                document.getElementById('react-heart-count').innerText = participant.reactions.heart || 0;
+                document.getElementById('react-strong-count').innerText = participant.reactions.strong || 0;
+                document.getElementById('react-star-count').innerText = participant.reactions.star || 0;
+            }
+
+            // 2. Last: Show modal to get final rect
+            modal.classList.remove('hidden');
+            // Force layout to ensure transitions work
+            void modal.offsetWidth;
+            modal.classList.add('active');
+
+            if (firstRect) {
+                const lastRect = card.getBoundingClientRect();
+
+                // 3. Invert: Calculate change
+                const deltaX = firstRect.left - lastRect.left;
+                const deltaY = firstRect.top - lastRect.top;
+                const scaleX = firstRect.width / lastRect.width;
+                const scaleY = firstRect.height / lastRect.height;
+
+                // 4. Play: Animate from First to Last
+                card.style.transition = 'none';
+                card.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+                card.style.transformOrigin = 'top left';
+
+                // Force reflow
+                void card.offsetWidth;
+
+                // Animate to final state
+                card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                card.style.transform = '';
+
+                // Cleanup after animation
+                setTimeout(() => {
+                    card.style.transition = '';
+                    card.style.transformOrigin = '';
+                    sourceEl.style.opacity = '1'; // Restore source visibility
+                }, 500);
+            }
+        }
+
+        function closeProfileModal() {
+            const modal = document.getElementById('profile-modal');
+            const card = modal.querySelector('.profile-card');
+
+            modal.classList.remove('active');
+            // Wait for fade out
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function loadReactions(userId) {
+            document.querySelectorAll('.reaction-btn').forEach(btn => btn.classList.remove('reacted'));
+            const reactions = JSON.parse(localStorage.getItem('xmas_reactions') || '{}'); const userReacts = reactions[userId] || { heart: 0, strong: 0, star: 0 };
+            ['heart', 'strong', 'star'].forEach(type => { document.getElementById(`react-${type}-count`).innerText = userReacts[type]; const btn = document.querySelector(`.reaction-btn[onclick*="'${type}'"]`); if (sessionStorage.getItem(`reacted_${userId}_${type}`)) btn.classList.add('reacted'); });
+        }
+        function reactToProfile(type, btnElement) {
+            if (!currentProfileId) return; const sessionKey = `reacted_${currentProfileId}_${type}`; const reactions = JSON.parse(localStorage.getItem('xmas_reactions') || '{}'); if (!reactions[currentProfileId]) reactions[currentProfileId] = { heart: 0, strong: 0, star: 0 };
+            if (sessionStorage.getItem(sessionKey)) { reactions[currentProfileId][type] = Math.max(0, reactions[currentProfileId][type] - 1); sessionStorage.removeItem(sessionKey); btnElement.classList.remove('reacted'); } else { reactions[currentProfileId][type]++; sessionStorage.setItem(sessionKey, '1'); btnElement.classList.add('reacted'); }
+            localStorage.setItem('xmas_reactions', JSON.stringify(reactions)); document.getElementById(`react-${type}-count`).innerText = reactions[currentProfileId][type]; triggerHaptic();
+        }
+
+        function goToSantaWish() { runStepTransition('wish-screen', 'to_wish'); playSfx('sfx-wish-enter'); }
+        function showWishScreen() {
+            if (currentUser) document.getElementById('wish-nickname').value = currentUser.nickname;
+            document.getElementById('wish-form-container').classList.remove('hidden'); document.getElementById('santa-letter-view').style.display = 'none';
+            const overlay = document.getElementById('santa-notification-overlay'); overlay.classList.remove('active');
+            updateCountdown(); showScreen('wish-screen'); playSfx('sfx-wish-enter');
+        }
+        function updateCountdown() {
+            const now = new Date(); const xmasDate = new Date(now.getFullYear(), 11, 25);
+            const diffDays = Math.ceil((xmasDate - now) / (1000 * 60 * 60 * 24));
+            const label = document.getElementById('wish-countdown');
+            label.innerText = diffDays > 0 ? TEXTS[currentLang].countdown_pre.replace('$1', diffDays) : TEXTS[currentLang].countdown_post.replace('$1', Math.abs(diffDays));
+        }
+
+        function sendWish() {
+            const text = document.getElementById('wish-text').value.trim();
+            if (!text) { showToast(TEXTS[currentLang].toast_err_wish, true); return; }
+            document.getElementById('wish-form-container').classList.add('hidden');
+            const notif = document.getElementById('santa-notification-overlay'); notif.classList.remove('hidden'); requestAnimationFrame(() => notif.classList.add('active')); playSfx('sfx-notif-grand');
+
+            // Auto transition after 3 seconds
+            setTimeout(() => {
+                transitionToLetter();
+            }, 3000);
+        }
+
+
+
+        // --- MAGIC SENSOR LOGIC ---
+        function getMagicWhisper(lang) {
+            let magicMsg = "";
+            const now = new Date();
+            const hour = now.getHours();
+
+            // 1. Moonlight Whisper (Time Sensor)
+            // เช็คช่วงเวลา ตี 1 (01:00) ถึง ตี 4 (04:59)
+            if (hour >= 1 && hour < 5) {
+                if (lang === 'th') {
+                    magicMsg += `<br><br>ป.ล. ดึกป่านนี้แล้วยังไม่นอนอีกเหรอ? หรือมีเรื่องอะไรกวนใจให้ข่มตาไม่ลง... วางมันลงก่อนนะ คืนนี้ซานต้าจะเฝ้าฝันให้เอง 🌙`;
+                } else {
+                    magicMsg += `<br><br>P.S. Up so late? Is something troubling your mind? Put it down for now. Santa will watch over your dreams tonight. 🌙`;
+                }
+            }
+
+            // 2. Hesitation Sensor (Typing Pattern)
+            // เช็คว่ามีการลบแก้บ่อยเกินค่าที่กำหนดหรือไม่
+            if (hesitationCount > HESITATION_THRESHOLD) {
+                if (lang === 'th') {
+                    magicMsg += `<br><br>...ซานต้าแอบเห็นนะว่าเธอลบๆ พิมพ์ๆ อยู่หลายรอบ ไม่ต้องกังวลหรอกนะ ความรู้สึกแรกที่เธอคิดนั่นแหละ คือสิ่งที่จริงใจที่สุดแล้ว เชื่อมั่นในตัวเองหน่อยสิ ✨`;
+                } else {
+                    magicMsg += `<br><br>...Santa noticed you backspacing and rewriting a lot. Don't worry. Your first thought is often the truest one. Believe in yourself. ✨`;
+                }
+            }
+
+            return magicMsg;
+        }
+
+
+
+        // --- SPECIAL CREATOR GIFTS CONFIG ---
+        // Easy way for Creator to add special images/messages for specific names
+        const SPECIAL_GIFTS_DATA = {
+            // Format: 'Keyword': { img: 'url', msg: 'text' }
+            // Note: If you have different images for each person, update the 'img' field.
+
+            // 1. ยูมิ
+            'ยูมิ': {
+                textIcon: '🧸🎀',
+                msg: `สวัสดีครับ เบบี๋และยัยหนูของเค้า ก่อนอื่นเลยเมอร์รี่คริสต์มาสนะครับคนดี ขอให้ปีหน้าและปีนี้และหลังจากนี้เป็นปีที่ดีมากๆ ของหนู และมีความสุขมากๆ เลยนะคะ ขอบคุณที่ผ่านเรื่องราวต่างๆ ทั้งทุกข์และสุขและเศร้ามาด้วยกัน ขอบคุณที่ไม่ปล่อยมือเค้าไปไหน ขอบคุณหนูมากจริง ขอโทษที่ไม่เคยพาไปที่สวยๆ ไปถ่ายรูปหรือไปกินของอร่อยๆ หรือซื้อของพิเศษๆ เหมือนคนอื่นให้หนูนะครับ แต่นั่นก็ไม่ได้หมายความว่าเค้าจะไม่อยากทำให้น้า และขอโทษที่เค้าแสดงความรักออกมาให้หนูได้เห็นไม่เก่งเลย แต่ก็รักมากๆ เลยนะคะ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะคะ ปล. รักและตลอดไป.. ปะป๊าของหนู`
+            },
+
+            // 2. มิ้นท์ / Mimint
+            'มิ้นท์': {
+                textIcon: '🏡✨',
+                msg: `สวัสดีครับพี่มิ้นท์ ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 สุขสันต์วันคริสต์มาสนะครับ ขอให้พี่มิ้นท์มีสุขภาพร่างกายแข็งแรง คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน ขอบคุณที่เข้ามา เป็นพี่สาวที่น่ารักมากๆ ให้กับผมและยูมินะครับ และขอบคุณที่เข้ามาเป็นแสงสว่างและคอยแนะนำแนวคิดและเล่าเรื่องราวต่างๆ ผมได้รู้จักพี่มิ้นท์ผ่านยูมิโดยได้ฟังและอ่านและเห็นมาตลอดหลายเดือนที่ผ่านมา พี่มิ้นท์เป็นเหมือนแรงบันดาลใจให้กับยูมิ และขอบคุณทุกการสนับสนุนและมอบโอกาสให้ต่างๆ และทราบมาว่าปีหน้าพี่มิ้นท์จะย้ายที่อยู่ใหม่ ผมขอเป็นกำลังใจให้ทุกอย่างราบรื่นนะครับ ขอให้บ้านหลังใหม่เป็นพื้นที่ที่อบอุ่นและมีความสุขที่สุดสำหรับพี่นะ 🏡✨ ขอบคุณมากๆ อีกครั้งนะครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ🎄💜`
+            },
+            'mimint': {
+                textIcon: '🏡✨',
+                msg: `สวัสดีครับพี่มิ้นท์ ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 สุขสันต์วันคริสต์มาสนะครับ ขอให้พี่มิ้นท์มีสุขภาพร่างกายแข็งแรง คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน ขอบคุณที่เข้ามา เป็นพี่สาวที่น่ารักมากๆ ให้กับผมและยูมินะครับ และขอบคุณที่เข้ามาเป็นแสงสว่างและคอยแนะนำแนวคิดและเล่าเรื่องราวต่างๆ ผมได้รู้จักพี่มิ้นท์ผ่านยูมิโดยได้ฟังและอ่านและเห็นมาตลอดหลายเดือนที่ผ่านมา พี่มิ้นท์เป็นเหมือนแรงบันดาลใจให้กับยูมิ และขอบคุณทุกการสนับสนุนและมอบโอกาสให้ต่างๆ และทราบมาว่าปีหน้าพี่มิ้นท์จะย้ายที่อยู่ใหม่ ผมขอเป็นกำลังใจให้ทุกอย่างราบรื่นนะครับ ขอให้บ้านหลังใหม่เป็นพื้นที่ที่อบอุ่นและมีความสุขที่สุดสำหรับพี่นะ 🏡✨ ขอบคุณมากๆ อีกครั้งนะครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ🎄💜`
+            },
+
+            // 3. อีฟ / เครซี
+            'อีฟ': {
+                textIcon: '👯‍♀️🥂',
+                msg: `สวัสดีครับ คุณอีฟและคุณเครซี ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณอีฟและคุณเครซี สุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ และมีความสุขมากๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน ขอบคุณคุณอีฟมากๆ ที่น่ารักและเอ็นดูยูมิมาตลอด และคอยสนับสนุนและช่วยเหลือยูมิมาตลอด คอยฮีลใจให้กับยูมิ ขอบคุณมากๆ จริงๆ คุณอีฟเป็นเหมือนพี่สาวและเพื่อนสาวของยูมิ ยูมิชอบคุณอีฟมากๆ เลยนะครับ ขอบคุณที่เข้ามาเติมเต็มให้กับยูมิ ผมเห็นมาตลอดเลยขอบคุณมากจริงๆ ครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ ❤️🎄`
+            },
+            'เครซี': {
+                textIcon: '👯‍♀️🥂',
+                msg: `สวัสดีครับ คุณอีฟและคุณเครซี ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณอีฟและคุณเครซี สุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ และมีความสุขมากๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน ขอบคุณคุณอีฟมากๆ ที่น่ารักและเอ็นดูยูมิมาตลอด และคอยสนับสนุนและช่วยเหลือยูมิมาตลอด คอยฮีลใจให้กับยูมิ ขอบคุณมากๆ จริงๆ คุณอีฟเป็นเหมือนพี่สาวและเพื่อนสาวของยูมิ ยูมิชอบคุณอีฟมากๆ เลยนะครับ ขอบคุณที่เข้ามาเติมเต็มให้กับยูมิ ผมเห็นมาตลอดเลยขอบคุณมากจริงๆ ครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ ❤️🎄`
+            },
+
+            // 4. เค้กเนย
+            'เค้กเนย': {
+                textIcon: '🍰✨',
+                msg: `สวัสดีครับ คุณเค้กเนย ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณเค้กเนย สุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ และมีความสุขมากๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ เลยนะครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            },
+
+            // 5. ชิกเก้น
+            'ชิกเก้น': {
+                textIcon: '🍗✨',
+                msg: `สวัสดีครับ คุณชิกเก้น ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณชิกเก้น สุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ เลยนะครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            },
+
+            // 6. เกี๊ยวซ่า / เกี๊ยว
+            'เกี๊ยว': {
+                textIcon: '🥟🎨',
+                msg: `สวัสดีครับ คุณเกี๊ยว ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณเกี๊ยว สุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ ได้เกรดดีๆ และมีความสุขมากๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ และได้เป็นแรงบันดาลใจในการวาดภาพให้กับยูมิ คุณเกี๊ยวเป็นเหมือนน้องสาวของยูมิเลยนะครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            },
+
+            // 7. บลู
+            'บลู': {
+                textIcon: '💙🌊',
+                msg: `สวัสดีครับ คุณบลู ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณบลูสุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ และขอบคุณที่คอยปกป้องยูมิในตอนที่มีคนมาทำไม่น่ารักกับยูมิ ขอบคุณมากๆ เลยนะครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            },
+
+            // 8. ริน
+            'ริน': {
+                textIcon: '🕊️💜',
+                msg: `สวัสดีครับ คุณริน ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณรินสุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ และมีความสุขมากๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ คุณรินเปรียบเสมือนเพื่อนสาวและพี่สาวของยูมิเลยนะครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            },
+
+            // 9. ฮันนิ
+            'ฮันนิ': {
+                textIcon: '🐰🌸',
+                msg: `สวัสดีครับ คุณฮันนิ ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณฮันนิสุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ และมีความสุขมากๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            },
+
+            // 10. ยู
+            'ยู': {
+                textIcon: '💝✨',
+                msg: `สวัสดีครับ คุณยู ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณยู สุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ และมีความสุขมากๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            },
+
+            // 11. จี
+            // 11. จี
+            'จี': {
+                textIcon: '🦄✨',
+                msg: `สวัสดีครับ พี่จี ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้พี่จี สุขภาพร่างกายแข็งแรง ร่ำๆ รวยๆ และมีความสุขมากๆ คิดหวังสิ่งใดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ พี่จีเป็นเหมือนพี่สาวของยูมิ และยูมิก็ชอบพี่จีมากๆ เลยครับ ขอบคุณมากๆ อีกครั้งนะครับ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            },
+
+            // 12. ท้อปปิ้ง
+            'ท้อปปิ้ง': {
+                textIcon: '🧁✨',
+                msg: `สวัสดีครับ คุณท้อปปิ้ง ก่อนอื่นขอบอกไว้ก่อนว่าผมเขียนอะไรแบบนี้ไม่ค่อยเก่งเลย55 ขอให้คุณท้อปปิ้ง สุขภาพร่างกายแข็งแรง  ร่ำๆรวยๆและมีความสุขมากๆ  คิดหวังสิ่งไดขอให้สมหวังทุกประการ ขอขอบคุณที่เราได้รู้จักกัน และขอบคุณเสมอมาที่น่ารักและเอ็นดูยูมิมากๆ สุดท้ายนี้ สุขสันต์วันปีใหม่ล่วงหน้านะครับ 🎄💜`
+            }
+        };
+
+        function openLetter() {
+            const name = document.getElementById('wish-nickname').value || 'Friend';
+            const wishText = document.getElementById('wish-text').value || '';
+
+            let baseMsg = pickSantaMessage(name, wishText, currentLang);
+            let specialImgHtml = '';
+
+            // Check Special Gifts
+            for (const [key, data] of Object.entries(SPECIAL_GIFTS_DATA)) {
+                if (name.toLowerCase().includes(key.toLowerCase())) {
+                    // FIX: Do NOT override default Santa message (baseMsg)
+                    // The special message will only be shown inside the Gift Modal
+
+                    if (data.img || data.msg || data.textIcon) {
+                        // Use provided image or a default gift placeholder if missing
+                        const imgUrl = data.img || ''; // Empty if textIcon is used
+                        const textIcon = data.textIcon || '';
+
+                        // SURPRISE REVEAL UI (Minimalist / Integrated)
+                        specialImgHtml = `
+                        <div class="special-gift-container" style="margin-top: 20px; text-align: right; padding-right: 10px;">
+                            <button class="btn-surprise-minimal" onclick="revealGiftModal('${imgUrl}', '${escapeHtml(data.msg || '')}', '${textIcon}')">
+                                <span style="font-size: 1.2em;">🎁</span> <span style="text-decoration: underline; text-underline-offset: 4px;">มีของขวัญถึงคุณ (แตะเพื่อดู)</span>
+                            </button>
+                        </div>`;
+                    }
+                    break; // Found a match, stop
+                }
+            }
+
+            const magicWhisper = getMagicWhisper(currentLang);
+
+            document.getElementById('letter-text').innerHTML = baseMsg.replace(/\n/g, '<br>') + magicWhisper + specialImgHtml;
+        }
+
+        // --- NEW MODAL REVEAL LOGIC ---
+        function revealGiftModal(imgUrl, msg, textIcon) {
+            playSfx('sfx-unwrap'); // Sound
+            triggerHaptic();
+
+            // Create Modal if not exists
+            let modal = document.getElementById('gift-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'gift-modal';
+                modal.className = 'gift-modal-overlay';
+                modal.innerHTML = `
+                    <div class="gift-modal-card">
+                        <button class="gift-modal-close" onclick="closeGiftModal()">✕</button>
+                        <div class="gift-modal-body">
+                            <div class="gift-deco">✨</div>
+                            <h3 class="gift-title">Surprise! 🎉</h3>
+                            <div id="gift-modal-content-img" class="gift-img-wrapper">
+                                <!-- Image goes here -->
+                            </div>
+                            <p id="gift-modal-msg" class="gift-msg-text" style="font-size: 16px; color: #555; margin-top: 15px; line-height: 1.6; white-space: pre-wrap;"></p>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+
+            // Set Content
+            const imgContainer = modal.querySelector('#gift-modal-content-img');
+            if (imgUrl && imgUrl.startsWith('http')) {
+                imgContainer.innerHTML = `<img src="${imgUrl}" class="gift-real-img" alt="Special Gift">`;
+            } else if (textIcon) {
+                imgContainer.innerHTML = `<div style="font-size: 80px; line-height: 1; text-align: center; margin: 20px 0; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2)); animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);">${textIcon}</div>`;
+            } else {
+                imgContainer.innerHTML = `<div style="font-size: 80px; text-align: center;">🎁</div>`;
+            }
+
+            const msgContainer = modal.querySelector('#gift-modal-msg');
+            if (msgContainer) msgContainer.innerText = msg; // Set text content
+
+            // Show
+            modal.classList.remove('hidden');
+            // Force reflow
+            void modal.offsetWidth;
+            modal.classList.add('active');
+
+            triggerGiftRain();
+
+            // SPECIAL EFFECT FOR YUMI (Heart Explosion)
+            // Identify Yumi via her unique icon '🧸🎀' or specific name check if needed
+            if (textIcon === '🧸🎀' || imgUrl.includes('yumi')) {
+                triggerHeartExplosion();
+            }
+        }
+
+        function triggerHeartExplosion() {
+            const colors = ['#ff6b6b', '#ff8787', '#fa5252', '#e64980', '#be4bdb'];
+            const container = document.body;
+
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'fixed';
+                heart.style.left = '50%';
+                heart.style.top = '50%';
+                heart.style.fontSize = Math.random() * 20 + 20 + 'px'; // Bigger hearts
+                heart.style.transform = `translate(-50%, -50%)`;
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '99999';
+
+                // Random destination
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 400 + 150; // Faster explosion
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+
+                heart.animate([
+                    { transform: `translate(-50%, -50%) scale(0)`, opacity: 1 },
+                    { transform: `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(1.5) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 1000 + 1500,
+                    easing: 'cubic-bezier(0, .9, .57, 1)',
+                    fill: 'forwards'
+                });
+
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 2500); // Cleanup
+            }
+        }
+
+        function closeGiftModal() {
+            const modal = document.getElementById('gift-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+        }
+
+        function viewFullImage(url) {
+            // Simple lightbox or new tab
+            window.open(url, '_blank');
+        }
+
+        // Inject Styles for Small Button & Modal
+        const style = document.createElement('style');
+        style.innerHTML = `
+            /* Minimalist Button (Paper Theme Integrated) */
+            .btn-surprise-minimal {
+                background: transparent;
+                color: #C0392B; /* Deep Red like handwriting */
+                border: none;
+                padding: 8px 12px;
+                font-family: var(--font-hand);
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s, opacity 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                opacity: 0.8;
+                border-radius: 8px;
+            }
+            .btn-surprise-minimal:hover { 
+                transform: translateY(-1px); 
+                opacity: 1; 
+                background: rgba(192, 57, 43, 0.05); /* Very subtle hover bg */
+            }
+            .btn-surprise-minimal:active { transform: scale(0.98); }
+
+            /* Modal Styles */
+            .gift-modal-overlay {
+                position: fixed; inset: 0; z-index: 10005;
+                background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+                display: flex; align-items: center; justify-content: center;
+                opacity: 0; pointer-events: none; transition: opacity 0.3s;
+                padding: 20px;
+            }
+            .gift-modal-overlay.active { opacity: 1; pointer-events: auto; }
+            
+            .gift-modal-card {
+                background: white; width: 100%; max-width: 320px;
+                border-radius: 24px; padding: 25px;
+                text-align: center; position: relative;
+                box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+                transform: scale(0.8) translateY(20px);
+                transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                border: 4px solid #FFCDD2;
+            }
+            .gift-modal-overlay.active .gift-modal-card { transform: scale(1) translateY(0); }
+
+            .gift-modal-close {
+                position: absolute; top: 10px; right: 10px;
+                background: #eee; border: none; width: 30px; height: 30px;
+                border-radius: 50%; font-size: 16px; color: #555;
+                cursor: pointer; transition: background 0.2s;
+            }
+            .gift-modal-close:hover { background: #ddd; }
+
+            .gift-img-wrapper {
+                margin: 15px 0;
+                min-height: 150px;
+                display: flex; align-items: center; justify-content: center;
+                background: #f9f9f9; border-radius: 12px;
+                overflow: hidden;
+            }
+            .gift-real-img {
+                max-width: 100%; max-height: 300px;
+                border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+            .gift-title {
+                font-family: var(--font-cursive); font-size: 32px; color: #E05555;
+                margin: 0 0 10px; line-height: 1;
+            }
+            .gift-deco { font-size: 40px; margin-bottom: -5px; animation: bounce 3s infinite; }
+        `;
+        document.head.appendChild(style);
+
+        function transitionToLetter() {
+            playSfx('sfx-letter'); openLetter();
+            const notif = document.getElementById('santa-notification-overlay'); const notifCard = notif.querySelector('.notification-card'); const letterView = document.getElementById('santa-letter-view');
+            notifCard.classList.add('zoom-out-fade');
+            setTimeout(() => { letterView.style.display = 'block'; letterView.classList.add('active'); letterView.querySelector('.letter-card').classList.add('zoom-in-enter'); }, 300);
+            setTimeout(() => { notif.classList.remove('active'); notif.classList.add('hidden'); notifCard.classList.remove('zoom-out-fade'); }, 600);
+        }
+
+        function resetWish() {
+            document.getElementById('wish-text').value = '';
+            hesitationCount = 0; // Reset counter
+
+            document.getElementById('santa-letter-view').classList.remove('active');
+            document.querySelector('.letter-card').classList.remove('zoom-in-enter');
+            setTimeout(() => { document.getElementById('santa-letter-view').style.display = 'none'; showWishScreen(); }, 300);
+        }
+
+        // --- NEW KEYWORD LOGIC ---
+        function pickSantaMessage(name, wishText, lang) {
+            // SPECIAL MESSAGE FOR YUMI/KAEWCHA (Dynamic & Magical)
+            if (lang === 'th' && (name.includes('ยูมิ') || name.includes('แก้วชา'))) {
+                const w = wishText.toLowerCase();
+                // 1. Emotional / Tired
+                if (w.includes('เหนื่อย') || w.includes('ท้อ') || w.includes('ร้องไห้') || w.includes('เศร้า')) {
+                    return `โฮ่ โฮ่ โฮ... ยูมิเด็กดีของซานต้า ซานต้าได้รับจดหมายที่เปื้อนคราบน้ำตาจางๆ ของหนูแล้วนะ... ซานต้าวิเศษใจหายวูบเลย แต่รู้ไหม? ทุกหยดน้ำตาคือหลักฐานของความพยายามที่ยิ่งใหญ่ หนูเก่งมากที่ผ่านมันมาได้ คืนนี้ซานต้าจะโรยผงเวทมนตร์แห่งความอบอุ่นให้หนูหลับฝันดี พรุ่งนี้ตื่นมาจะเป็นวันที่สดใส เชื่อซานต้านะคนเก่ง 🌟`;
+                }
+                // 2. Wishing for Happiness / Good things
+                if (w.includes('ความสุข') || w.includes('ดีขึ้น') || w.includes('สมหวัง') || w.includes('ยิ้ม')) {
+                    return `โฮ่ โฮ่ โฮ... อื้มมม... กลิ่นอายความหวังจากจดหมายของหนูหอมหวานมากเลยยูมิ! ซานต้าอ่านแล้วยิ้มตามเลยนะ สิ่งที่หนูปรารถนาน่ะ... มันกำลังเดินทางมาหาหนูแล้วนะ! รู้ไหมว่ารอยยิ้มของหนูคือเวทมนตร์ที่แก้คำสาปได้ทุกอย่าง ยิ้มเยอะๆ นะ ปีหน้าจะเป็นปีของหนูแน่นอน! ✨`;
+                }
+                // 3. Love / Relationships
+                if (w.includes('รัก') || w.includes('แฟน') || w.includes('ชอบ') || w.includes('คู่')) {
+                    return `โฮ่ โฮ่ โฮ... ยูมิเอ๋ย... เรื่องของหัวใจเนี่ย ซานต้าอาจจะเสกให้ไม่ได้ดั่งใจ 100% แต่ซานต้าบอกได้ว่า 'ความรักที่ดีคือความรักที่ทำให้หนูเป็นตัวเอง' นะครับ... ถ้าความรักทำให้หนูยิ้มได้ นั่นคือของขวัญที่ดีที่สุดแล้ว รักษาหัวใจดวงน้อยๆ ของหนูไว้ให้ดีนะ ซานต้าเอาใจช่วยเสมอ! ❤️`;
+                }
+                // 4. Default / General Wish (Reflection)
+                return `โฮ่ โฮ่ โฮ... ถึงยูมิคนเก่ง... ซานต้าอ่านข้อความของหนูอย่างตั้งใจแล้วนะ... "${wishText.substring(0, 20)}${wishText.length > 20 ? '...' : ''}" งั้นเหรอ? น่าสนใจจริงๆ... ซานต้าได้จดบันทึกลงในสมุดปกทองคำเรียบร้อยแล้ว! ไม่ว่าคำขอนั้นจะยากแค่ไหน แต่เชื่อเถอะว่า 'เด็กดีที่มีจิตใจอ่อนโยนอย่างหนู' สมควรได้รับสิ่งที่ดีที่สุดเสมอ รอรับของขวัญจากฟ้าได้เลย! 🎁✨`;
+            }
+            // (End specific check)
+
+            const text = wishText.toLowerCase(); const egg = SANTA_EASTER_MESSAGES[lang];
+            const keys = {
+                cat: ['cat', 'kitten', 'meow', 'kitty', 'แมว', 'เหมียว', 'น้อง', 'ทาส', 'dog', 'หมา', 'สัตว์'],
+                rest: ['tired', 'burnout', 'exhausted', 'sad', 'cry', 'tough', 'hard', 'stress', 'เหนื่อย', 'ท้อ', 'ล้า', 'เครียด', 'ร้องไห้', 'หนัก', 'พัก', 'หมดไฟ', 'sleep', 'นอน', 'เจ็บปวด', 'แย่', 'พัง', 'ผิดหวัง'],
+                vent: ['ระบาย', 'ใจร้าย', 'ไม่ไหว', 'เกลียด', 'เบื่อ', 'unhappy', 'hate', 'bad year', 'worst', 'fail', 'ล้มเหลว'],
+                hope: ['hope', 'dream', 'wish', 'future', 'goal', 'start', 'begin', 'new year', 'ความฝัน', 'หวัง', 'อนาคต', 'เริ่ม', 'ตั้งใจ', 'เป้าหมาย', 'ดีขึ้น', 'เปลี่ยนแปลง', 'สำเร็จ'],
+                friend: ['friend', 'bestie', 'gang', 'เพื่อน', 'มิตร', 'แก๊ง'],
+                mom: ['mom', 'mother', 'dad', 'father', 'family', 'parents', 'แม่', 'พ่อ', 'ครอบครัว', 'ป๊า', 'ม้า', 'บ้าน', 'พี่', 'น้อง'],
+                xmas: ['christmas', 'xmas', 'gift', 'present', 'tree', 'คริสต์มาส', 'ปีใหม่', 'ของขวัญ', 'santa', 'ซานต้า', 'party', 'ฉลอง'],
+                love: ['love', 'crush', 'boyfriend', 'girlfriend', 'single', 'lonely', 'heart', 'แฟน', 'โสด', 'เหงา', 'รัก', 'อกหัก', 'จีบ', 'คู่', 'แต่งงาน'],
+                money: ['money', 'rich', 'work', 'job', 'bonus', 'salary', 'gold', 'เงิน', 'รวย', 'งาน', 'โบนัส', 'หวย', 'ลาภ', 'เศรษฐี', 'หนี้', 'ถูกรางวัล'],
+                health: ['health', 'diet', 'weight', 'fat', 'thin', 'sick', 'pain', 'gym', 'อ้วน', 'ผอม', 'ลดน้ำหนัก', 'ป่วย', 'เจ็บ', 'สุขภาพ', 'ออกกำลัง', 'แข็งแรง'],
+                study: ['study', 'exam', 'grade', 'school', 'university', 'test', 'pass', 'เรียน', 'สอบ', 'เกรด', 'มหาลัย', 'โรงเรียน', 'คะแนน', 'thesis', 'ธีซิส', 'จบ']
+            };
+
+            // CHECK KEYWORDS FIRST (Priority High)
+            if (keys.vent.some(k => text.includes(k))) return egg.vent(name);
+            if (keys.cat.some(k => text.includes(k))) return egg.cat(name);
+            if (keys.rest.some(k => text.includes(k))) return egg.rest(name);
+            if (keys.mom.some(k => text.includes(k))) return egg.mom(name);
+            if (keys.love.some(k => text.includes(k))) return egg.love(name);
+            if (keys.money.some(k => text.includes(k))) return egg.money(name);
+            if (keys.health.some(k => text.includes(k))) return egg.health(name);
+            if (keys.study.some(k => text.includes(k))) return egg.study(name);
+            if (keys.friend.some(k => text.includes(k))) return egg.friend(name);
+            if (keys.hope.some(k => text.includes(k))) return egg.hope(name);
+            if (keys.xmas.some(k => text.includes(k))) return egg.xmas(name);
+
+            // IF NO KEYWORDS -> CHECK VIP IDENTITY (Fallback to Personality)
+            if (lang === 'th') {
+                const n = name.toLowerCase();
+                // 1. MINT (Inspiration/Light + New Home Magic Reveal)
+                if (n.includes('มิ้นท์') || n.includes('mimint')) {
+                    return `โฮ่ โฮ่ โฮ... มิิ้นท์เอ๋ย... จู่ๆ ลูกแก้ววิเศษของซานต้าก็ส่องแสงวาบขึ้นมา! 🔮 เอ๊ะ... ภาพนี้มัน... กล่องลัง? กุญแจดอกใหม่? 🗝️ ฮั่นแน่! ซานต้ารู้นะว่าปีหน้าหนูกำลังจะ **"ย้ายบ้านใหม่"** ใช่ไหมล่ะ? (ซานต้าเก่งไหมล่ะ รู้ได้ไงเนี่ย 🤫) ไม่ต้องกังวลนะ การเปลี่ยนแปลงครั้งนี้จะเป็นจุดเริ่มต้นที่วิเศษสุดๆ ขอให้บ้านหลังใหม่เป็นพื้นที่ความสุขของหนูนะ! 🏡✨`;
+                }
+                // 2. EVE/CRAZY (Healer/Best Sister)
+                if (n.includes('อีฟ') || n.includes('เครซี')) {
+                    return `โฮ่ โฮ่ โฮ... น้องอีฟคนเก่ง! ซานต้ารู้มาว่าหนูคอยฮีลใจให้คนรอบข้างเสมอเลยใช่ไหม? น่ารักจริงๆ... แต่ดีใจให้สุดเลยนะ ปีนี้ซานต้าส่งพลังบวกกลับไปให้หนู 100 เท่า! เป็นรอยยิ้มที่สดใสแบบนี้ตลอดไปนะ ❤️`;
+                }
+                // 3. BLUE (Protector)
+                if (n.includes('บลู')) {
+                    return `โฮ่ โฮ่ โฮ... คุณบลูผู้พิทักษ์! การคอยปกป้องดูแลคนอื่นคือหน้าที่ของฮีโร่... ซานต้าขอยกย่องหัวใจที่แกร่งกล้าของหนูนะ ขอให้ปีหน้ามีแต่เรื่องทำให้หนูยิ้มได้ โดยไม่ต้องเหนื่อยปกป้องใคร พักผ่อนบ้างนะคนเก่ง 🛡️✨`;
+                }
+                // 4. GYOZA (Artist/Little Sister)
+                if (n.includes('เกี๊ยว')) {
+                    return `โฮ่ โฮ่ โฮ... น้องเกี๊ยวศิลปินตัวน้อย! ซานต้าเห็นจินตนาการอันงดงามในหัวใจหนูนะ วาดฝันต่อไปนะลูก ความฝันของหนูสวยงามเสมอ ขอให้โลกนี้ใจดีกับหนูเหมือนที่หนูแต้มสีสันให้โลกนะ 🎨🌈`;
+                }
+                // 5. CAKE NOEY / CHICKEN / HANNI / YU (Kind Supporters)
+                if (n.includes('เค้กเนย') || n.includes('ชิกเก้น') || n.includes('ฮันนิ') || n.includes('ยู')) {
+                    return `โฮ่ โฮ่ โฮ... สวัสดีจ้ะเด็กดี... ซานต้าสัมผัสได้ถึงความอ่อนโยนและความน่ารักที่หนูมอบให้คนอื่นเสมอนะ ผู้ให้ย่อมได้รับสิ่งที่ดีตอบแทนเสมอ ปีหน้าเตรียมรับความสุขก้อนโตได้เลย! 🎁`;
+                }
+                // 6. G / RIN (Sister Figure)
+                if (n.includes('จี') || n.includes('ริน')) {
+                    return `โฮ่ โฮ่ โฮ... พี่สาวผู้แสนดี... การมีหนูอยู่ทำให้โลกของใครบางคนอบอุ่นขึ้นเยอะเลยรู้ไหม? ซานต้าขออวยพรให้ความดีของหนู ปกป้องคุ้มครองหนูให้พบเจอแต่กัลยาณมิตรที่ดีตลอดปีนะจ๊ะ 😊`;
+                }
+            }
+
+            // IF NO KEYWORDS & NO VIP -> MAGIC MIRROR (Reflects User's Wish)
+            if (lang === 'th') {
+                return `โฮ่ โฮ่ โฮ... ${name} เอ๋ย... ซานต้าได้ยินที่เธอเขียนมาว่า "${wishText.substring(0, 15)}${wishText.length > 15 ? '...' : ''}" แล้วนะ... อืมมม ช่างเป็นข้อความที่มีเอกลักษณ์จริงๆ ซานต้าประทับตราอนุมัติลงบนท้องฟ้าให้แล้ว! ไม่ว่ามันจะเป็นคำขอเล็กหรือใหญ่ ขอให้พลังแห่งคริสต์มาสช่วยนำทางให้มันเป็นจริงเร็วๆ นี้นะ! 🎅📜`;
+            } else {
+                return `Ho Ho Ho... ${name}... Santa read your message: "${wishText.substring(0, 15)}${wishText.length > 15 ? '...' : ''}"... clearer than the North Star! I've officially stamped it in my Golden Book. May the Christmas magic guide this wish to you very soon! 🎅📜`;
+            }
+        }
+
+        // --- SNAPSHOT FEATURE ---
+        function toggleSnapshot() {
+            document.body.classList.toggle('snapshot-mode');
+            if (document.body.classList.contains('snapshot-mode')) {
+                showToast('แตะที่หน้าจอเพื่อกลับสู่ปกติ', false);
+                setTimeout(() => { document.addEventListener('click', exitSnapshot, { once: true }); }, 100);
+            }
+        }
+        function exitSnapshot() { document.body.classList.remove('snapshot-mode'); }
+
+        // --- SPECIAL PERSONALIZED FINAL CONTENT ---
+        const SPECIAL_FINAL_CONTENT = {
+            'ยูมิ': {
+                text: `ขอบคุณที่เป็นความสดใสของโลกใบนี้<br>ขอให้รอยยิ้มของหนูไม่จางหายไปไหนนะคนเก่ง`,
+                image: 'https://files.catbox.moe/ekd9w4.png',
+                song: 'เจ้าชายน้อย.mp3'
+            },
+            'แก้วชา': {
+                text: `การมีอยู่ของหนูคือของขวัญที่ดีที่สุด<br>รักตัวเองให้มากๆ นะคนดี`,
+                image: 'https://files.catbox.moe/ekd9w4.png',
+                song: 'เจ้าชายน้อย.mp3'
+            }
+        };
+
+        function saveLetterAndFinish() {
+            playSfx('sfx-finale'); const letterCard = document.getElementById('letter-card-element'); letterCard.classList.add('fade-out-letter');
+            const name = document.getElementById('wish-nickname').value || currentUser?.nickname || 'Friend';
+            document.getElementById('final-username').innerText = name;
+            const finalScreen = document.getElementById('final-screen'); const variants = ['final-scene-snowman', 'final-scene-tree', 'final-scene-candles', 'final-scene-gifts'];
+            variants.forEach(cls => finalScreen.classList.remove(cls));
+            let hash = 0; for (let i = 0; i < name.length; i++) hash += name.charCodeAt(i);
+            const sceneClass = variants[hash % variants.length]; finalScreen.classList.add(sceneClass);
+
+            // CHECK FOR SPECIAL CONTENT
+            const specialContent = Object.keys(SPECIAL_FINAL_CONTENT).find(key => name.includes(key)) ? SPECIAL_FINAL_CONTENT[Object.keys(SPECIAL_FINAL_CONTENT).find(key => name.includes(key))] : null;
+
+            // Handle Special BGM
+            if (specialContent && specialContent.song) {
+                const mainBgm = document.getElementById('bgm-main');
+                if (mainBgm) mainBgm.pause(); // Stop main BGM
+
+                let specialAudio = document.getElementById('bgm-special');
+                if (!specialAudio) {
+                    specialAudio = new Audio(specialContent.song);
+                    specialAudio.id = 'bgm-special';
+                    specialAudio.loop = true;
+                    document.body.appendChild(specialAudio);
+                } else {
+                    specialAudio.src = specialContent.song;
+                }
+                specialAudio.volume = 0.5;
+                specialAudio.play().catch(e => console.log("Audio play failed:", e));
+            }
+
+            if (specialContent) {
+                // APPLY STARRY NIGHT THEME
+                finalScreen.className = 'screen final-scene-starry'; // Override all variants
+
+                // Add Starry Background Layers
+                if (!finalScreen.querySelector('.starry-bg')) {
+                    const stars = document.createElement('div');
+                    stars.className = 'starry-bg';
+                    finalScreen.prepend(stars);
+                }
+
+                // Add Shooting Stars (Random intervals)
+                const shootingStarInterval = setInterval(() => {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    star.style.top = Math.random() * 50 + '%';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                    finalScreen.appendChild(star);
+                    setTimeout(() => star.remove(), 4000);
+                }, 2000); // New star every 2 seconds
+
+                // TYPEWRITER EFFECT
+                const subMsg = finalScreen.querySelector('.final-msg-sub');
+                if (subMsg) {
+                    subMsg.style.marginBottom = '15px';
+                    subMsg.innerHTML = '<span class="typewriter-text"></span><span class="typewriter-cursor"></span>';
+
+                    const textSpan = subMsg.querySelector('.typewriter-text');
+                    const fullText = specialContent.text.replace(/<br>/g, '\n'); // Handle line breaks
+                    let charIndex = 0;
+
+                    function typeWriter() {
+                        if (charIndex < fullText.length) {
+                            const char = fullText.charAt(charIndex);
+                            textSpan.innerHTML += (char === '\n') ? '<br>' : char;
+                            charIndex++;
+                            setTimeout(typeWriter, 100); // Typing speed
+                        } else {
+                            subMsg.querySelector('.typewriter-cursor').style.display = 'none'; // Hide cursor when done
+                        }
+                    }
+                    // Start typing after a short delay
+                    setTimeout(typeWriter, 1000);
+                }
+
+                // Inject Image if provided
+                if (specialContent.image) {
+                    let imgContainer = document.getElementById('final-special-img');
+                    if (!imgContainer) {
+                        imgContainer = document.createElement('div');
+                        imgContainer.id = 'final-special-img';
+                        imgContainer.style.marginTop = '15px';
+                        imgContainer.style.textAlign = 'center';
+                        imgContainer.style.animation = 'scaleIn 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards'; // Smooth entrance
+                        subMsg.after(imgContainer);
+                    }
+
+                    // Styled for a Polaroid/Frame look
+                    imgContainer.innerHTML = `
+                        <div style="
+                            display: inline-block;
+                            padding: 10px;
+                            background: #fff;
+                            border-radius: 12px;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                            transform: rotate(-2deg);
+                            transition: transform 0.3s ease;
+                        " onmouseover="this.style.transform='rotate(0deg) scale(1.02)'" onmouseout="this.style.transform='rotate(-2deg)'">
+                            <img src="${specialContent.image}" style="
+                                display: block;
+                                max-width: 100%;
+                                max-height: 250px; 
+                                border-radius: 8px;
+                                object-fit: cover;
+                            ">
+                        </div>
+                    `;
+                }
+            }
+
+            setTimeout(() => {
+                showScreen('final-screen');
+                requestAnimationFrame(() => {
+                    document.getElementById('final-screen').classList.add('final-screen-active');
+                });
+                triggerGiftRain();
+
+                // Trigger Surprise Video MANUAL only
+                const goToVideoBtn = document.getElementById('btn-go-to-video');
+                if (goToVideoBtn) {
+                    // Ensure button is fresh (remove old listeners if any)
+                    const newBtn = goToVideoBtn.cloneNode(true);
+                    goToVideoBtn.parentNode.replaceChild(newBtn, goToVideoBtn);
+
+                    newBtn.onclick = () => {
+                        const videoSection = document.getElementById('surpriseVideo');
+                        const vid = document.getElementById('finalVideo');
+                        const fallbackBtn = document.getElementById('videoPlayFallback');
+
+                        // Fade out main app
+                        document.body.classList.add('show-surprise-video');
+
+                        // Show video section
+                        videoSection.classList.add('video-show');
+
+                        // Pause BGM
+                        const bgm = document.getElementById('bgm-main');
+                        if (bgm) bgm.pause();
+
+                        // Force pause and disable autoplay to be absolutely sure
+                        vid.pause();
+                        vid.currentTime = 0;
+                        vid.autoplay = false;
+
+                        // MANUAL PLAY ONLY: Show button immediately
+                        fallbackBtn.style.display = 'block';
+                        fallbackBtn.innerText = "✨ แตะเพื่อรับชมของขวัญพิเศษ ✨";
+
+                        fallbackBtn.onclick = () => {
+                            vid.muted = false;
+                            vid.play();
+                            fallbackBtn.style.display = 'none';
+                        };
+                    };
+                }
+            }, 1000);
+        }
+
+        const SANTA_HINTS = [
+            "ฉันจะเปิด เมื่อเธอกล้าวางของที่หนักเกินไปลงจากมือ", "ฉันสว่างที่สุด ในคืนที่เธอเชื่อว่ามืดสนิทไปแล้ว", "ฉันเติบโตทุกครั้ง ที่เธอยอมรับว่า “ยังไม่เก่งพอ” ได้อย่างซื่อสัตย์",
+            "ฉันจะดังขึ้นเสมอ เมื่อเธอยอมหยุดฟังใจตัวเองสักครู่", "ฉันเริ่มทำงานทุกครั้ง ที่เธอก้าวออกจากที่เดิมเพียงก้าวเดียว", "ฉันแข็งแรงขึ้น เมื่อเธอเลิกด่าตัวเองเหมือนเป็นศัตรู",
+            "ฉันโอบอุ้มเธอได้ ก็ต่อเมื่อเธอยอมยื่นมือมาขอความช่วยเหลือ", "ฉันผ่อนเบาภาระให้เธอทันที ที่เธอกล้าบอกว่า “วันนี้ไม่ค่อยไหว”", "ฉันจะพาเธอไปต่อ เมื่อเธอหยุดมองคนอื่น แล้วหันมามองจังหวะของตัวเอง",
+            "ฉันเริ่มนับหนึ่งใหม่ทุกวัน ไม่ว่าพักก่อนหน้าของเธอจะยาวแค่ไหน", "ฉันคมชัดขึ้น เมื่อเธอพักสายตาจากหน้าจอแล้วมองโลกจริงสักครู่", "ฉันอบอุ่นขึ้นทุกครั้ง ที่เธอพูดกับตัวเองเหมือนเพื่อน ไม่ใช่ศาลตัดสิน",
+            "ฉันจะไม่ทิ้งเธอ แม้เธอจะคิดว่าตัวเองทำพังไปหมดแล้วก็ตาม", "ฉันซ่อนอยู่ในคำว่า “ยัง” ที่เธอเติมต่อท้ายทุกความล้มเหลว", "ฉันเบาลง เมื่อเธอยอมแบ่งฉันให้ใครสักคนช่วยถือ",
+            "ฉันจะเงียบลง เมื่อเธอหายใจเข้าลึก ๆ แล้วให้อภัยตัวเองสักครั้ง", "ฉันเปลี่ยนรูปร่างได้เสมอ ตามวิธีที่เธอเลือกมองตัวเองในวันนี้", "ฉันเริ่มทำงานทันที ที่เธอตัดสินใจดูแลร่างกายก่อนเรื่องอื่น",
+            "ฉันจะอยู่ข้างเธอ แม้วันที่เธอรู้สึกว่าตัวเองไม่คู่ควรกับอะไรเลย", "ฉันจะพาเธอกลับบ้านเสมอ ตราบใดที่เธอยังเลือกเดินต่อทีละก้าว",
+
+            // New Hints
+            "ฉันจะเปิดออกให้เธอเห็นทางไปต่อ เมื่อเธอยอมปล่อยวางอดีตที่จบไปแล้ว",
+            "ฉันส่องสว่างได้เสมอ แม้ในคืนที่มืดมิดที่สุด เพียงแค่เธอไม่ลืมที่จะเปิดไฟในใจตัวเอง", // Dumbledore
+            "ฉันสะท้อนความจริงที่งดงามที่สุด เมื่อเธอหยุดมองหาข้อตำหนิ แล้วมองเห็นความปรารถนาดีในแววตาตัวเอง", // Mirror of Erised
+            "ฉันงดงามและหายากที่สุด เมื่อเธออดทนรอให้ตัวเองเบ่งบานในเวลาที่ใช่ ไม่ใช่เวลาของใคร", // Mulan
+            "ฉันมีค่ามหาศาล เมื่อเธอเลิกกังวลถึงอนาคต แล้วตัดสินใจใช้เวลาตอนนี้เพื่อความสุขของตัวเอง", // Gandalf
+            "ฉันจะเลิกเจ็บปวด เมื่อเธอเลือกที่จะเรียนรู้จากบาดแผล แทนที่จะวิ่งหนีมันไปตลอดกาล", // Lion King
+            "ฉันจะเกิดขึ้นจริงอย่างน่าอัศจรรย์ เมื่อเธอเลิกแค่ 'ลองพยายาม' แต่ใส่หัวใจลงไปอย่างเต็มร้อย", // Yoda
+            "ฉันคือของขวัญที่ชื่อว่า 'ปัจจุบัน' ที่เธอจะแกะได้ ก็ต่อเมื่อเลิกแบกอดีตและเลิกกังวลถึงอนาคต", // Kung Fu Panda
+            "ฉันแข็งแกร่งขึ้นทุกครั้ง ที่เธอล้มลงแล้วเรียนรู้วิธีที่จะลุกขึ้นยืนใหม่อีกครั้ง", // Batman Begins
+            "ฉันสมบูรณ์แบบได้ ก็เพราะเธอยอมรับว่า 'น้ำตา' และ 'รอยยิ้ม' ล้วนเป็นส่วนหนึ่งของการเติบโต", // Inside Out
+            "ฉันกลายเป็นเรื่องจริงได้ เมื่อเธอเริ่มเชื่อในปาฏิหาริย์ของตัวเอง แม้ใครจะบอกว่าเป็นไปไม่ได้ก็ตาม", // Alice
+            "ฉันยิ่งใหญ่กว่าที่ตาเห็นเสมอ เหมือนกับความเก่งกล้าในใจเธอ ที่มักจะถูกความกลัวบดบังไว้", // Pooh
+            "ฉันเต้นอยู่ตลอดเวลา เพื่อย้ำเตือนว่าภายใต้เกราะที่แข็งแกร่ง เธอมีหัวใจที่อ่อนโยนซ่อนอยู่", // Iron Man
+            "ฉันหอมหวานเสมอ แม้เธอจะไม่รู้ล่วงหน้าว่าวันพรุ่งนี้ รสชาติของชีวิตจะเป็นแบบไหน", // Forrest Gump
+            "ฉันมาพร้อมความรับผิดชอบที่ยิ่งใหญ่ นั่นคือภารกิจในการดูแลหัวใจของเธอเองให้ดีที่สุด" // Spider-Man
+        ];
+        let lastHintIndex = -1; let hintTypingInterval = null;
+        function openSantaHint() {
+            playSfx('sfx-magic'); triggerHaptic();
+            let newIndex; do { newIndex = Math.floor(Math.random() * SANTA_HINTS.length); } while (newIndex === lastHintIndex && SANTA_HINTS.length > 1); lastHintIndex = newIndex;
+            const hintText = SANTA_HINTS[newIndex];
+            const overlay = document.getElementById('hint-overlay'); const contentEl = document.getElementById('hint-text-content'); contentEl.innerText = ""; overlay.classList.remove('hidden'); requestAnimationFrame(() => { overlay.classList.add('is-open'); });
+            if (hintTypingInterval) clearInterval(hintTypingInterval);
+            let charIndex = 0; hintTypingInterval = setInterval(() => { if (charIndex < hintText.length) { contentEl.innerHTML += hintText.charAt(charIndex); charIndex++; } else { clearInterval(hintTypingInterval); } }, 50);
+        }
+        function closeSantaHint() { const overlay = document.getElementById('hint-overlay'); overlay.classList.remove('is-open'); if (hintTypingInterval) clearInterval(hintTypingInterval); setTimeout(() => overlay.classList.add('hidden'), 400); }
+
+
+        // --- FEATURE: SNOW GLOBE (SHAKE DETECTION) ---
+        class ShakeDetector {
+            constructor(threshold = 15, timeout = 1000) {
+                this.threshold = threshold;
+                this.timeout = timeout;
+                this.lastX = null;
+                this.lastY = null;
+                this.lastZ = null;
+                this.lastTime = 0;
+                this.onShake = null;
+                this.isEnabled = false;
+            }
+
+            start(callback) {
+                if (this.isEnabled) return;
+                this.onShake = callback;
+                this.isEnabled = true;
+                if (window.DeviceMotionEvent) {
+                    window.addEventListener('devicemotion', this.handleMotion.bind(this), false);
+                }
+            }
+
+            stop() {
+                this.isEnabled = false;
+                window.removeEventListener('devicemotion', this.handleMotion.bind(this));
+            }
+
+            handleMotion(e) {
+                const current = e.accelerationIncludingGravity;
+                if (!current) return;
+
+                const currentTime = Date.now();
+                if ((currentTime - this.lastTime) > 100) {
+                    const diffTime = currentTime - this.lastTime;
+                    this.lastTime = currentTime;
+
+                    if (this.lastX !== null) {
+                        const speed = Math.abs(current.x + current.y + current.z - this.lastX - this.lastY - this.lastZ) / diffTime * 10000;
+                        if (speed > this.threshold) {
+                            if (this.onShake) this.onShake();
+                        }
+                    }
+
+                    this.lastX = current.x;
+                    this.lastY = current.y;
+                    this.lastZ = current.z;
+                }
+            }
+
+            static async requestPermission() {
+                if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+                    try {
+                        const response = await DeviceMotionEvent.requestPermission();
+                        return response === 'granted';
+                    } catch (e) {
+                        console.error(e);
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        const SnowStormController = {
+            isStorming: false,
+            stormTimer: null,
+
+            trigger() {
+                if (this.isStorming) {
+                    clearTimeout(this.stormTimer);
+                    this.stormTimer = setTimeout(() => this.calmDown(), 3000);
+                    return;
+                }
+
+                this.isStorming = true;
+
+                // Trigger canvas storm
+                if (snowSystem) {
+                    snowSystem.triggerStorm();
+                }
+
+                playSfx('sfx-magic');
+                triggerHaptic();
+
+                this.stormTimer = setTimeout(() => this.calmDown(), 3000);
+            },
+
+            calmDown() {
+                this.isStorming = false;
+                // Canvas system handles cleanup automatically
+            }
+        };
+
+        const shaker = new ShakeDetector(300); // Threshold 300 for shake
+
+        // --- 3D HOLOGRAPHIC EFFECT LOGIC ---
+        class HoloEffect {
+            constructor(selector) {
+                this.elements = document.querySelectorAll(selector);
+                this.init();
+            }
+
+            init() {
+                this.elements.forEach(el => {
+                    // Inject Glare if not exists
+                    if (!el.querySelector('.holo-glare')) {
+                        const glare = document.createElement('div');
+                        glare.className = 'holo-glare';
+                        el.appendChild(glare);
+                    }
+
+                    el.classList.add('holo-card');
+
+                    el.addEventListener('mousemove', (e) => this.handleMove(e, el));
+                    el.addEventListener('mouseleave', () => this.handleLeave(el));
+                });
+            }
+
+            handleMove(e, el) {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // Calculate rotation (max 10 degrees)
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                // Update Transform
+                el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+                // Update Glare
+                const glare = el.querySelector('.holo-glare');
+                if (glare) {
+                    glare.style.opacity = '1';
+                    glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 80%)`;
+                }
+            }
+
+            handleLeave(el) {
+                el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                const glare = el.querySelector('.holo-glare');
+                if (glare) {
+                    glare.style.opacity = '0';
+                }
+            }
+        }
+
+        // Initialize Holo Effect
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply ONLY to the profile card (viewing other's card)
+            new HoloEffect('.profile-card');
+            initModernInputs();
+        });
+
+        function initModernInputs() {
+            const inputs = document.querySelectorAll('.input-group input, .input-group textarea');
+            inputs.forEach(input => {
+                const group = input.closest('.input-group');
+                if (!group) return;
+
+                // Check initial state
+                if (input.value.trim() !== '') {
+                    group.classList.add('has-content');
+                }
+
+                // Events
+                input.addEventListener('focus', () => group.classList.add('has-content'));
+                input.addEventListener('blur', () => {
+                    if (input.value.trim() === '') {
+                        group.classList.remove('has-content');
+                    }
+                });
+                input.addEventListener('input', () => {
+                    if (input.value.trim() !== '') group.classList.add('has-content');
+                });
+            });
+        }
+
+    </script>
+</body>
+
+</html>
