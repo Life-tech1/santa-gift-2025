@@ -2654,6 +2654,56 @@
             margin-bottom: 6px;
             display: inline-block;
         }
+
+        /* FIX: Profile Modal Scroll & Close Issue */
+        #profile-modal {
+            z-index: 11000 !important;
+            /* Ensure it's on top */
+        }
+
+        .profile-card {
+            max-height: 85vh;
+            /* Keep it within viewport */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            /* Hide overflow of card itself */
+        }
+
+        #profile-avatar-container {
+            flex-shrink: 0;
+            /* Prevent avatar from shrinking */
+        }
+
+        #profile-name {
+            flex-shrink: 0;
+        }
+
+        #profile-wish {
+            max-height: 25vh;
+            /* Limit text height so it scrolls */
+            overflow-y: auto;
+            /* Enable scroll */
+            -webkit-overflow-scrolling: touch;
+            padding-right: 6px;
+            margin-bottom: 10px;
+            /* Scrollbar styling */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+        }
+
+        #profile-wish::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #profile-wish::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #profile-wish::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -3641,10 +3691,11 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data.status === 'ok' && Array.isArray(data.participants)) {
-                        return data.participants.map(p => ({
+                        return data.participants.map((p, idx) => ({
                             ...p,
-                            // Ensure ID exists (generate from timestamp+name if missing) to fix Reaction Bug
-                            id: p.id || (p.joinedAt + p.nickname).replace(/[^a-zA-Z0-9]/g, ''),
+                            // Ensure ID exists and is UNIQUE. 
+                            // Using index (idx) ensures even duplicate names get different IDs for this session
+                            id: p.id || `user_${idx}_${(p.nickname || '').replace(/\s/g, '')}`,
                             nickname: escapeHtml(p.nickname),
                             wishShort: escapeHtml(p.shortWish)
                         }));
@@ -3711,7 +3762,8 @@
             document.getElementById('profile-wish').innerText = wishText;
 
             // Reset & Load Reactions (FIX: Ensure button state is correct)
-            loadReactions(participant.id);
+            // Reset & Load Reactions
+            loadReactions(participant);
             // Fallback for counts if not loaded from localstorage yet (fetched from API)
             if (participant.reactions) {
                 document.getElementById('react-heart-count').innerText = participant.reactions.heart || 0;
@@ -3763,18 +3815,76 @@
             // Wait for fade out
             setTimeout(() => {
                 modal.classList.add('hidden');
+                currentProfileId = null; // Clear ID to prevent overlap
             }, 300);
         }
 
-        function loadReactions(userId) {
+        function loadReactions(participant) {
+            const userId = participant.id;
             document.querySelectorAll('.reaction-btn').forEach(btn => btn.classList.remove('reacted'));
-            const reactions = JSON.parse(localStorage.getItem('xmas_reactions') || '{}'); const userReacts = reactions[userId] || { heart: 0, strong: 0, star: 0 };
-            ['heart', 'strong', 'star'].forEach(type => { document.getElementById(`react-${type}-count`).innerText = userReacts[type]; const btn = document.querySelector(`.reaction-btn[onclick*="'${type}'"]`); if (sessionStorage.getItem(`reacted_${userId}_${type}`)) btn.classList.add('reacted'); });
+
+            // 1. Get Base Counts from API Data
+            const baseReactions = participant.reactions || { heart: 0, strong: 0, star: 0 };
+
+            // 2. Check if user already reacted locally (UI State)
+            ['heart', 'strong', 'star'].forEach(type => {
+                let count = baseReactions[type] || 0;
+
+                // If user reacted in this session/device, mark button
+                // We use localStorage key 'my_reactions' to track what I have clicked
+                const myReactions = JSON.parse(localStorage.getItem('my_reactions_log') || '{}');
+                const hasReacted = myReactions[`${userId}_${type}`];
+
+                const btn = document.querySelector(`.reaction-btn[onclick*="'${type}'"]`);
+                if (hasReacted) {
+                    btn.classList.add('reacted');
+                    count++; // Visual update for local user
+                }
+
+                document.getElementById(`react-${type}-count`).innerText = count;
+            });
         }
+
         function reactToProfile(type, btnElement) {
-            if (!currentProfileId) return; const sessionKey = `reacted_${currentProfileId}_${type}`; const reactions = JSON.parse(localStorage.getItem('xmas_reactions') || '{}'); if (!reactions[currentProfileId]) reactions[currentProfileId] = { heart: 0, strong: 0, star: 0 };
-            if (sessionStorage.getItem(sessionKey)) { reactions[currentProfileId][type] = Math.max(0, reactions[currentProfileId][type] - 1); sessionStorage.removeItem(sessionKey); btnElement.classList.remove('reacted'); } else { reactions[currentProfileId][type]++; sessionStorage.setItem(sessionKey, '1'); btnElement.classList.add('reacted'); }
-            localStorage.setItem('xmas_reactions', JSON.stringify(reactions)); document.getElementById(`react-${type}-count`).innerText = reactions[currentProfileId][type]; triggerHaptic();
+            if (!currentProfileId) return;
+
+            const myReactionsKey = 'my_reactions_log';
+            const myReactions = JSON.parse(localStorage.getItem(myReactionsKey) || '{}');
+            const interactionKey = `${currentProfileId}_${type}`;
+            const isReacted = myReactions[interactionKey];
+
+            // UI Update
+            const countEl = document.getElementById(`react-${type}-count`);
+            let currentCount = parseInt(countEl.innerText) || 0;
+
+            if (isReacted) {
+                // UN-REACT
+                currentCount = Math.max(0, currentCount - 1);
+                btnElement.classList.remove('reacted');
+                delete myReactions[interactionKey];
+            } else {
+                // REACT
+                currentCount++;
+                btnElement.classList.add('reacted');
+                myReactions[interactionKey] = true;
+                triggerHeartExplosion(); // Fun effect
+            }
+
+            countEl.innerText = currentCount;
+            localStorage.setItem(myReactionsKey, JSON.stringify(myReactions));
+            triggerHaptic();
+
+            // Send to API (Fire and Forget)
+            fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    action: 'react',
+                    targetId: currentProfileId,
+                    type: type,
+                    value: isReacted ? -1 : 1
+                })
+            }).catch(() => { });
         }
 
         function goToSantaWish() { runStepTransition('wish-screen', 'to_wish'); playSfx('sfx-wish-enter'); }
